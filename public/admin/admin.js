@@ -1,6 +1,9 @@
 const API_BASE_URL = window.location.hostname === 'localhost' 
     ? 'http://localhost:5000/api' 
-    : 'https://intorealtors.onrender.com/api';
+    : 'https://realtors-yvtj.onrender.com/api';
+
+// Placeholder image hosted on Cloudinary (upload this to your Cloudinary account or use an existing one)
+const PLACEHOLDER_IMAGE = 'https://res.cloudinary.com/your-cloud-name/image/upload/q_80,f_auto/intorealtors/placeholder.jpg';
 
 const tabConfig = {
     dashboard: { listId: 'dashboard' },
@@ -304,18 +307,14 @@ async function loadDashboard() {
 }
 
 function createCard(type, item) {
-    const baseUrl = window.location.hostname === 'localhost' 
-        ? 'http://localhost:5000' 
-        : 'https://intorealtors.onrender.com';
-    
-    // Validate image paths
-    const mainImage = (item.image && typeof item.image === 'string' && item.image.trim() !== '')
-        ? (item.image.startsWith('http') ? item.image : `${baseUrl}${item.image}`)
-        : `${baseUrl}/Uploads/placeholder.jpg`;
+    // Use Cloudinary URLs directly from backend; fallback to placeholder if invalid
+    const mainImage = (item.image && typeof item.image === 'string' && item.image.trim() !== '' && item.image.startsWith('https://res.cloudinary.com'))
+        ? item.image
+        : PLACEHOLDER_IMAGE;
     const additionalImages = Array.isArray(item.images)
-        ? item.images.map(img => (img && typeof img === 'string' && img.trim() !== '') 
-            ? (img.startsWith('http') ? img : `${baseUrl}${img}`) 
-            : `${baseUrl}/Uploads/placeholder.jpg`)
+        ? item.images.map(img => (img && typeof img === 'string' && img.trim() !== '' && img.startsWith('https://res.cloudinary.com')) 
+            ? img 
+            : PLACEHOLDER_IMAGE)
         : [];
     
     console.log(`Creating card for ${type}, item:`, JSON.stringify(item, null, 2));
@@ -325,7 +324,7 @@ function createCard(type, item) {
     if (type === 'properties') {
         return `
             <div class="card bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
-                <img src="${mainImage}" alt="${item.alt || 'Property image'}" class="w-full h-40 sm:h-48 object-cover rounded-lg mb-3" onerror="this.src='${baseUrl}/Uploads/placeholder.jpg'; console.error('Image load failed for ${mainImage}, using placeholder')">
+                <img src="${mainImage}" alt="${item.alt || 'Property image'}" class="w-full h-40 sm:h-48 object-cover rounded-lg mb-3" onerror="this.src='${PLACEHOLDER_IMAGE}'; console.error('Image load failed for ${mainImage}, using placeholder')">
                 <h3 class="text-base sm:text-lg font-semibold text-gray-800 dark:text-white">${item.title || 'Untitled'}</h3>
                 <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">${item.location || 'Unknown'} - ${item.price || 'N/A'}</p>
                 <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Type: ${item.type || 'N/A'}</p>
@@ -339,7 +338,7 @@ function createCard(type, item) {
     } else if (type === 'testimonials') {
         return `
             <div class="card bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
-                <img src="${mainImage}" alt="${item.alt || 'Testimonial image'}" class="w-full h-40 sm:h-48 object-cover rounded-lg mb-3" onerror="this.src='${baseUrl}/Uploads/placeholder.jpg'; console.error('Image load failed for ${mainImage}, using placeholder')">
+                <img src="${mainImage}" alt="${item.alt || 'Testimonial image'}" class="w-full h-40 sm:h-48 object-cover rounded-lg mb-3" onerror="this.src='${PLACEHOLDER_IMAGE}'; console.error('Image load failed for ${mainImage}, using placeholder')">
                 <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 italic">"${item.quote || 'No quote provided'}"</p>
                 <p class="text-xs sm:text-sm font-semibold text-gray-800 dark:text-white mt-2">${item.author || 'Anonymous'}</p>
                 <div class="flex flex-wrap gap-2 mt-3">
@@ -352,7 +351,7 @@ function createCard(type, item) {
     } else if (type === 'blogs') {
         return `
             <div class="card bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
-                <img src="${mainImage}" alt="${item.alt || 'Blog image'}" class="w-full h-40 sm:h-48 object-cover rounded-lg mb-3" onerror="this.src='${baseUrl}/Uploads/placeholder.jpg'; console.error('Image load failed for ${mainImage}, using placeholder')">
+                <img src="${mainImage}" alt="${item.alt || 'Blog image'}" class="w-full h-40 sm:h-48 object-cover rounded-lg mb-3" onerror="this.src='${PLACEHOLDER_IMAGE}'; console.error('Image load failed for ${mainImage}, using placeholder')">
                 <h3 class="text-base sm:text-lg font-semibold text-gray-800 dark:text-white">${item.title || 'Untitled'}</h3>
                 <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">${item.description || 'No description'}</p>
                 <div class="flex flex-wrap gap-2 mt-3">
@@ -382,17 +381,14 @@ function createCard(type, item) {
 }
 
 function getViewContent(type, item) {
-    const baseUrl = window.location.hostname === 'localhost' 
-        ? 'http://localhost:5000' 
-        : 'https://intorealtors.onrender.com';
-    
-    const mainImage = (item.image && typeof item.image === 'string' && item.image.trim() !== '')
-        ? (item.image.startsWith('http') ? item.image : `${baseUrl}${item.image}`)
-        : `${baseUrl}/Uploads/placeholder.jpg`;
+    // Use Cloudinary URLs directly from backend; fallback to placeholder if invalid
+    const mainImage = (item.image && typeof item.image === 'string' && item.image.trim() !== '' && item.image.startsWith('https://res.cloudinary.com'))
+        ? item.image
+        : PLACEHOLDER_IMAGE;
     const additionalImages = Array.isArray(item.images)
-        ? item.images.map(img => (img && typeof img === 'string' && img.trim() !== '') 
-            ? (img.startsWith('http') ? img : `${baseUrl}${img}`) 
-            : `${baseUrl}/Uploads/placeholder.jpg`)
+        ? item.images.map(img => (img && typeof img === 'string' && img.trim() !== '' && img.startsWith('https://res.cloudinary.com')) 
+            ? img 
+            : PLACEHOLDER_IMAGE)
         : [];
     
     console.log(`Rendering view for ${type}, item:`, JSON.stringify(item, null, 2));
@@ -419,7 +415,7 @@ function getViewContent(type, item) {
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Primary Image</label>
-                <img src="${mainImage}" alt="${item.alt || 'Property image'}" class="w-full h-40 object-cover rounded-lg mt-1" onerror="this.src='${baseUrl}/Uploads/placeholder.jpg'; console.error('Image load failed for ${mainImage}, using placeholder')">
+                <img src="${mainImage}" alt="${item.alt || 'Property image'}" class="w-full h-40 object-cover rounded-lg mt-1" onerror="this.src='${PLACEHOLDER_IMAGE}'; console.error('Image load failed for ${mainImage}, using placeholder')">
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
@@ -432,9 +428,9 @@ function getViewContent(type, item) {
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Additional Images</label>
                 ${additionalImages.length ? `
-                    <div class="grid grid-cols-2 gap-2 mt-1">
+                    <div class="grid grid-cols-2 gap-2 mt-1國家
                         ${additionalImages.map((img, index) => `
-                            <img src="${img}" alt="${item.alt || 'Image'} ${index + 1}" class="w-full h-24 object-cover rounded-lg" onerror="this.src='${baseUrl}/Uploads/placeholder.jpg'; console.error('Additional image load failed for ${img}, using placeholder')">
+                            <img src="${img}" alt="${item.alt || 'Image'} ${index + 1}" class="w-full h-24 object-cover rounded-lg" onerror="this.src='${PLACEHOLDER_IMAGE}'; console.error('Additional image load failed for ${img}, using placeholder')">
                         `).join('')}
                     </div>
                 ` : '<p class="text-sm text-gray-600 dark:text-gray-400">None</p>'}
@@ -452,7 +448,7 @@ function getViewContent(type, item) {
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Image</label>
-                <img src="${mainImage}" alt="${item.alt || 'Testimonial image'}" class="w-full h-40 object-cover rounded-lg mt-1" onerror="this.src='${baseUrl}/Uploads/placeholder.jpg'; console.error('Image load failed for ${mainImage}, using placeholder')">
+                <img src="${mainImage}" alt="${item.alt || 'Testimonial image'}" class="w-full h-40 object-cover rounded-lg mt-1" onerror="this.src='${PLACEHOLDER_IMAGE}'; console.error('Image load failed for ${mainImage}, using placeholder')">
             </div>
         `;
     } else if (type === 'blogs') {
@@ -471,7 +467,7 @@ function getViewContent(type, item) {
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Image</label>
-                <img src="${mainImage}" alt="${item.alt || 'Blog image'}" class="w-full h-40 object-cover rounded-lg mt-1" onerror="this.src='${baseUrl}/Uploads/placeholder.jpg'; console.error('Image load failed for ${mainImage}, using placeholder')">
+                <img src="${mainImage}" alt="${item.alt || 'Blog image'}" class="w-full h-40 object-cover rounded-lg mt-1" onerror="this.src='${PLACEHOLDER_IMAGE}'; console.error('Image load failed for ${mainImage}, using placeholder')">
             </div>
         `;
     } else if (type === 'contacts') {
@@ -772,10 +768,6 @@ function showDeleteModal(type, id) {
 }
 
 function getFormFields(type, item = {}) {
-    const baseUrl = window.location.hostname === 'localhost' 
-        ? 'http://localhost:5000' 
-        : 'https://intorealtors.onrender.com';
-
     if (type === 'properties') {
         return `
             <div>
