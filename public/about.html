@@ -760,7 +760,7 @@ body {
         async function fetchTestimonials() {
             const testimonialsCarousel = document.querySelector('.testimonials-carousel');
             try {
-                const response = await fetchWithTimeout('https://intorealtors.onrender.com/api/testimonials');
+                const response = await fetchWithTimeout('https://realtors-yvtj.onrender.com/api/testimonials');
                 if (!response.ok) {
                     const errorData = await response.json().catch(() => ({}));
                     console.error(`Fetch testimonials failed: Status ${response.status}, ${JSON.stringify(errorData)}`);
@@ -785,7 +785,7 @@ body {
         async function fetchBlogs() {
             const blogCarousel = document.querySelector('.blog-carousel');
             try {
-                const response = await fetchWithTimeout('https://intorealtors.onrender.com/api/blogs');
+                const response = await fetchWithTimeout('https://realtors-yvtj.onrender.com/api/blogs');
                 if (!response.ok) {
                     const errorData = await response.json().catch(() => ({}));
                     console.error(`Fetch blogs failed: Status ${response.status}, ${JSON.stringify(errorData)}`);
