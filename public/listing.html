@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore premium property listings in Abuja with INTO REALTORS. Find homes for sale, rent, or shortlet in top locations like Karsana.">
+    <title>INTO REALTORS | Property Listings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <link rel="icon" type="image/png" href="/admin/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "RealEstateAgent",
+        "name": "INTO REALTORS",
+        "url": "https://www.intorealtors.com",
+        "logo": "https://www.intorealtors.com/logo.png",
+        "description": "INTO REALTORS offers premium real estate services in Abuja, specializing in buying, renting, and shortlet properties.",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "123 Property Lane",
+            "addressLocality": "Abuja",
+            "addressRegion": "FCT",
+            "addressCountry": "NG"
+        },
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+23470314517217",
+            "contactType": "Customer Service",
+            "email": "contact@intorealtors.com"
+        },
+        "sameAs": [
+            "https://www.facebook.com/intorealtors",
+            "https://www.twitter.com/intorealtors",
+            "https://www.instagram.com/intorealtors"
+        ]
+    }
+    </script>
+    <style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding-bottom: 5rem; /* Space for bottom nav */
+}
+
+/* Custom Scrollbar (Desktop Only) */
+@media (min-width: 1024px) {
+    html {
+        scrollbar-width: thin;
+        scrollbar-color: #FF5A3C #f1f5f9;
+    }
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #FF5A3C;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #e04a2f;
+    }
+}
+
+/* Shimmer Loading Effect */
+.shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); /* Fixed typo */
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Loader */
+.loader {
+    width: 40px;
+    aspect-ratio: 1;
+    color: #FF5A3C;
+    position: relative;
+    background: radial-gradient(10px, currentColor 94%, #0000);
+    margin: 1rem auto;
+}
+
+.loader:before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background:
+        radial-gradient(9px at bottom right, #0000 94%, currentColor) top left,
+        radial-gradient(9px at bottom left, #0000 94%, currentColor) top right,
+        radial-gradient(9px at top right, #0000 94%, currentColor) bottom left,
+        radial-gradient(9px at top left, #0000 94%, currentColor) bottom right;
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    animation: l18 1.5s infinite cubic-bezier(0.3, 1, 0, 1);
+}
+
+@keyframes l18 {
+    33%  { inset: -10px; transform: rotate(0deg) }
+    66%  { inset: -10px; transform: rotate(90deg) }
+    100% { inset: 0; transform: rotate(90deg) }
+}
+
+/* Filter Chips */
+.filter-chip {
+    transition: all 0.3s ease;
+}
+
+.filter-chip.active {
+    background-color: #FF5A3C;
+    color: white;
+}
+
+.filter-chip:hover, .filter-chip:focus {
+    background-color: #e04a2f;
+    color: white;
+}
+
+/* Property Cards */
+.property-card {
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.property-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.property-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Scrollable Text Content */
+.content-container {
+    max-height: calc(100vh - 60px); /* Adjust for bottom nav height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    padding: 1rem;
+    margin-bottom: 60px; /* Prevent content from being hidden under bottom nav */
+}
+
+/* Hide Scrollbar for Clean Look */
+.content-container::-webkit-scrollbar {
+    display: none;
+}
+
+.content-container {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.scroll-hidden::-webkit-scrollbar {
+    display: none;
+}
+
+/* Bottom Nav Styles (Instagram-like Sizing for Phone View) */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem 0; /* Reduced padding for compact look */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+    transition: transform 0.3s ease;
+    height: 60px; /* Instagram-like height for mobile */
+}
+
+.bottom-nav-hidden {
+    transform: translateY(100%);
+}
+
+.bottom-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #4b5563;
+    text-decoration: none;
+    font-size: 0.625rem; /* Smaller font size (~10px) for mobile */
+    font-weight: 500;
+    padding: 0.5rem;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.bottom-nav a i {
+    font-size: 1.25rem; /* Smaller icon size (~24px) for mobile */
+    margin-bottom: 0.25rem;
+}
+
+.bottom-nav a:hover, .bottom-nav a.active, .bottom-nav a:focus {
+    color: #FF5A3C;
+    transform: translateY(-2px);
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 6rem;
+    right: 1.5rem;
+    background: #FF5A3C;
+    color: white;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    z-index: 60;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover, .back-to-top:focus {
+    background: #e04a2f;
+    transform: scale(1.1);
+    outline: 2px solid #FF5A3C;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 639px) {
+    .back-to-top {
+        bottom: 5rem; /* Adjusted for smaller bottom nav */
+        right: 1rem;
+        transform: scale(0.9);
+    }
+    .back-to-top:hover, .back-to-top:focus {
+        transform: scale(1);
+    }
+    .bottom-nav {
+        height: 60px; /* Consistent height for small screens */
+        padding: 0.5rem 0;
+    }
+    .bottom-nav a {
+        font-size: 0.625rem; /* Instagram-like text size */
+    }
+    .bottom-nav a i {
+        font-size: 1.25rem; /* Instagram-like icon size */
+    }
+}
+
+@media (min-width: 640px) {
+    .bottom-nav {
+        padding: 0.75rem 0;
+        height: 70px; /* Slightly taller for tablets */
+    }
+    .bottom-nav a {
+        font-size: 0.75rem;
+    }
+    .bottom-nav a i {
+        font-size: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .bottom-nav {
+        max-width: 32rem;
+        margin: 0 auto;
+        border-radius: 15px;
+        height: 80px; /* Larger for desktop */
+    }
+    .bottom-nav a {
+        font-size: 0.875rem;
+    }
+    .bottom-nav a i {
+        font-size: 1.75rem;
+    }
+    .back-to-top {
+        bottom: 2rem;
+        right: 2rem;
+    }
+}
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation -->
+    <nav class="sticky top-0 z-50 bg-white shadow-md py-3 px-4 flex justify-center items-center" role="navigation" aria-label="Main navigation">
+        <div class="text-center">
+            <span class="text-[#FF5A3C] font-bold text-xl">INTO REALTORS</span>
+        </div>
+    </nav>
+
+    <!-- Listing Section -->
+    <section class="py-10 px-4 bg-gray-50">
+        <div class="container mx-auto">
+            <!-- Search and Filters -->
+            <div class="mb-8">
+                <form class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto mb-6" role="search" aria-label="Property search">
+                    <input type="text" placeholder="Search by location (e.g., Karsana)" class="px-4 py-2 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#FF5A3C]" aria-label="Search by location">
+                    <select class="px-4 py-2 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#FF5A3C]" aria-label="Select property type">
+                        <option value="">All Types</option>
+                        <option value="sale">For Sale</option>
+                        <option value="rent">For Rent</option>
+                        <option value="shortlet">Shortlet</option>
+                    </select>
+                    <button type="submit" class="bg-[#FF5A3C] text-white px-6 py-2 rounded-full hover:bg-[#e04a2f] transition duration-300 focus:outline-none focus:ring-2 focus:ring-[#FF5A3C]" aria-label="Search properties">
+                        Search
+                    </button>
+                </form>
+                <div class="flex space-x-2 overflow-x-auto scroll-hidden justify-center">
+                    <button class="filter-chip active px-4 py-2 bg-[#FF5A3C] text-white rounded-full whitespace-nowrap" data-filter="all">All Properties</button>
+                    <button class="filter-chip px-4 py-2 bg-gray-100 text-gray-700 rounded-full whitespace-nowrap" data-filter="sale">For Sale</button>
+                    <button class="filter-chip px-4 py-2 bg-gray-100 text-gray-700 rounded-full whitespace-nowrap" data-filter="rent">For Rent</button>
+                    <button class="filter-chip px-4 py-2 bg-gray-100 text-gray-700 rounded-full whitespace-nowrap" data-filter="shortlet">Shortlet</button>
+                </div>
+            </div>
+
+            <!-- Trending Locations Carousel -->
+            <div class="mb-8">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-gray-800">Trending Locations</h2>
+                    <button class="text-[#FF5A3C] text-sm font-medium hover:underline" aria-label="See all locations">See all</button>
+                </div>
+                <div id="locations-carousel" class="flex space-x-4 overflow-x-auto pb-2 scroll-hidden">
+                    <div class="flex-shrink-0 w-48 rounded-xl overflow-hidden shadow-md">
+                        <div class="relative h-32">
+                            <div class="loader"></div>
+                        </div>
+                        <div class="p-3">
+                            <h3 class="font-semibold text-gray-800 shimmer-text">Loading...</h3>
+                            <p class="text-sm text-gray-600 shimmer-text">Loading...</p>
+                            <p class="text-xs text-gray-500 shimmer-text">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property Listings -->
+            <div id="property-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="property-card bg-white rounded-xl overflow-hidden shadow-md transition duration-300 relative">
+                    <div class="relative h-48">
+                        <div class="loader"></div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg text-gray-800 mb-1 shimmer-text">Loading...</h3>
+                        <p class="text-sm text-gray-600 mb-2 shimmer-text">Loading...</p>
+                        <p class="text-xs text-gray-500 flex items-center mb-3 shimmer-text">Loading...</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Pagination -->
+            <div class="flex justify-center mt-6 space-x-2">
+                <button id="prev-page" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-full disabled:opacity-50" disabled>Previous</button>
+                <span id="page-info" class="px-4 py-2 text-gray-700">Page 1 of 1</span>
+                <button id="next-page" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-full disabled:opacity-50" disabled>Next</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-chevron-up text-xl"></i>
+    </a>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" role="navigation" aria-label="Bottom navigation">
+        <a href="index.html">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="listing.html" class="active">
+            <i class="fas fa-list"></i>
+            <span>Listing</span>
+        </a>
+        <a href="about.html">
+            <i class="fas fa-info-circle"></i>
+            <span>About</span>
+        </a>
+        <a href="contact.html">
+            <i class="fab fa-whatsapp"></i>
+            <span>Contact</span>
+        </a>
+    </nav>
+<script>
+    // Fetch properties from backend
+    async function fetchProperties(page = 1, limit = 9) {
+        try {
+            const response = await fetch(`/api/properties?page=${page}&limit=${limit}`, {
+                headers: { 'Accept': 'application/json' }
+            });
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error || `HTTP ${response.status}: Failed to fetch properties`);
+            }
+            const data = await response.json();
+            console.log('Properties fetched:', { page, limit, total: data.total });
+            return data;
+        } catch (error) {
+            console.error('Error fetching properties:', {
+                message: error.message,
+                url: `/api/properties?page=${page}&limit=${limit}`,
+                stack: error.stack
+            });
+            document.getElementById('property-grid').innerHTML = `<p class="text-center text-red-600">Failed to load properties: ${error.message}</p>`;
+            return { properties: [], total: 0, page: 1, pages: 1 };
+        }
+    }
+
+    // Fetch trending locations
+    async function fetchLocations() {
+        try {
+            const response = await fetch('/api/properties/locations', {
+                headers: { 'Accept': 'application/json' }
+            });
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error || `HTTP ${response.status}: Failed to fetch locations`);
+            }
+            const locations = await response.json();
+            console.log('Locations fetched:', { count: locations.length });
+            return locations;
+        } catch (error) {
+            console.error('Error fetching locations:', {
+                message: error.message,
+                url: '/api/properties/locations',
+                stack: error.stack
+            });
+            document.getElementById('locations-carousel').innerHTML = `<p class="text-center text-red-600">Failed to load locations: ${error.message}</p>`;
+            return [];
+        }
+    }
+
+    // Function to create property card HTML
+    function createPropertyCard(property) {
+        const typeColors = {
+            sale: '#FF5A3C',
+            rent: 'green-600',
+            shortlet: 'yellow-600'
+        };
+        return `
+            <div class="property-card bg-white rounded-xl overflow-hidden shadow-md transition duration-300 relative" data-type="${property.type}">
+                <div class="relative h-48">
+                    <div class="absolute top-2 left-2 bg-${typeColors[property.type]} text-white text-xs font-bold px-2 py-1 rounded-md">
+                        ${property.type.charAt(0).toUpperCase() + property.type.slice(1)}
+                    </div>
+                    <div class="shimmer h-full w-full"></div>
+                    <img src="${property.image}" alt="${property.alt}" class="w-full h-full object-cover" loading="lazy">
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg text-gray-800 mb-1">${property.price}</h3>
+                    <p class="text-sm text-gray-600 mb-2">${property.title}</p>
+                    <p class="text-xs text-gray-500 flex items-center mb-3">
+                        <i class="fas fa-map-marker-alt mr-1"></i> ${property.location}
+                    </p>
+                    <a href="property-details.html?id=${property._id}" class="bg-[#FF5A3C] text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-[#e04a2f] transition duration-300 inline-block" aria-label="View details for ${property.title}">View Details</a>
+                </div>
+            </div>
+        `;
+    }
+
+    // Function to create location card HTML
+    function createLocationCard(location) {
+        return `
+            <div class="flex-shrink-0 w-48 rounded-xl overflow-hidden shadow-md">
+                <div class="relative h-32">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
+                        <h3 class="text-white font-semibold">${location.location}</h3>
+                    </div>
+                    <div class="shimmer h-full w-full"></div>
+                    <img src="${location.image || 'https://images.unsplash.com/photo-1580216643062-cf460548a66a?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80'}" 
+                         alt="${location.location}" class="w-full h-full object-cover" loading="lazy">
+                </div>
+                <div class="p-3">
+                    <p class="text-sm text-gray-600">From ${location.minPrice}</p>
+                    <p class="text-xs text-gray-500">${location.count} listings</p>
+                </div>
+            </div>
+        `;
+    }
+
+    // Load and render properties and locations
+    async function loadContent(page = 1) {
+        const propertyGrid = document.getElementById('property-grid');
+        const locationsCarousel = document.getElementById('locations-carousel');
+        const prevButton = document.getElementById('prev-page');
+        const nextButton = document.getElementById('next-page');
+        const pageInfo = document.getElementById('page-info');
+
+        // Load properties
+        propertyGrid.innerHTML = '<div class="loader"></div>';
+        const { properties, total, page: currentPage, pages } = await fetchProperties(page);
+        if (properties.length === 0) {
+            propertyGrid.innerHTML = '<p class="text-center text-gray-600">No properties available at the moment.</p>';
+        } else {
+            propertyGrid.innerHTML = properties.map(createPropertyCard).join('');
+        }
+
+        // Load locations
+        locationsCarousel.innerHTML = '<div class="loader"></div>';
+        const locations = await fetchLocations();
+        if (locations.length === 0) {
+            locationsCarousel.innerHTML = '<p class="text-center text-gray-600">No trending locations available.</p>';
+        } else {
+            locationsCarousel.innerHTML = locations.map(createLocationCard).join('');
+        }
+
+        // Update pagination
+        pageInfo.textContent = `Page ${currentPage} of ${pages}`;
+        prevButton.disabled = currentPage === 1;
+        nextButton.disabled = currentPage === pages;
+        prevButton.onclick = () => loadContent(currentPage - 1);
+        nextButton.onclick = () => loadContent(currentPage + 1);
+
+        // Apply observer and click handlers to new property cards
+        const cards = document.querySelectorAll('.property-card');
+        cards.forEach((card, index) => {
+            observer.observe(card);
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('a')) return;
+                window.location.href = `property-details.html?id=${properties[index]._id}`;
+                console.log('Card clicked:', { title: properties[index].title, id: properties[index]._id });
+            });
+            const img = card.querySelector('img');
+            img.addEventListener('load', () => {
+                img.classList.add('loaded');
+                img.classList.remove('shimmer');
+                const shimmerDiv = card.querySelector('.shimmer');
+                if (shimmerDiv) shimmerDiv.style.display = 'none';
+            });
+        });
+
+        // Apply observer to location cards
+        document.querySelectorAll('#locations-carousel img').forEach(img => {
+            img.addEventListener('load', () => {
+                img.classList.add('loaded');
+                img.classList.remove('shimmer');
+                const shimmerDiv = img.parentElement.querySelector('.shimmer');
+                if (shimmerDiv) shimmerDiv.style.display = 'none';
+            });
+        });
+
+        // Filter chips functionality
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                const filter = chip.dataset.filter;
+                cards.forEach(card => {
+                    card.style.display = filter === 'all' || card.dataset.type === filter ? 'block' : 'none';
+                });
+                console.log('Filter applied:', { filter });
+            });
+        });
+    }
+
+    // Search functionality
+    document.querySelector('form[role="search"]').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const locationInput = e.target.querySelector('input').value.trim();
+        const typeInput = e.target.querySelector('select').value;
+        const propertyGrid = document.getElementById('property-grid');
+
+        // Client-side validation
+        if (!locationInput && !typeInput) {
+            propertyGrid.innerHTML = '<p class="text-center text-red-600">Please provide a location or select a property type.</p>';
+            console.log('Search validation failed: No location or type provided');
+            return;
+        }
+        if (locationInput && locationInput.length < 3) {
+            propertyGrid.innerHTML = '<p class="text-center text-red-600">Location must be at least 3 characters long.</p>';
+            console.log('Search validation failed:', { location: locationInput, error: 'Location too short' });
+            return;
+        }
+        if (typeInput && !['sale', 'rent', 'shortlet'].includes(typeInput)) {
+            propertyGrid.innerHTML = '<p class="text-center text-red-600">Please select a valid property type.</p>';
+            console.log('Search validation failed:', { type: typeInput, error: 'Invalid property type' });
+            return;
+        }
+
+        // Construct query
+        const query = new URLSearchParams();
+        if (locationInput) query.append('location', locationInput);
+        if (typeInput) query.append('type', typeInput);
+
+        // Show loading state
+        propertyGrid.innerHTML = '<div class="loader"></div>';
+
+        try {
+            const response = await fetch(`/api/properties/search?${query.toString()}`, {
+                headers: { 'Accept': 'application/json' }
+            });
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                const errorMessage = errorData.errors
+                    ? errorData.errors.map(err => err.msg).join(', ')
+                    : errorData.error || `HTTP ${response.status}: Failed to search properties`;
+                throw new Error(errorMessage);
+            }
+            const properties = await response.json();
+            propertyGrid.innerHTML = properties.length === 0
+                ? '<p class="text-center text-gray-600">No results found for your search.</p>'
+                : properties.map(createPropertyCard).join('');
+
+            // Apply observers and event listeners to new cards
+            const cards = document.querySelectorAll('.property-card');
+            cards.forEach((card, index) => {
+                observer.observe(card);
+                card.addEventListener('click', (e) => {
+                    if (e.target.closest('a')) return;
+                    window.location.href = `property-details.html?id=${properties[index]._id}`;
+                    console.log('Search card clicked:', { title: properties[index].title, id: properties[index]._id });
+                });
+                const img = card.querySelector('img');
+                img.addEventListener('load', () => {
+                    img.classList.add('loaded');
+                    img.classList.remove('shimmer');
+                    const shimmerDiv = card.querySelector('.shimmer');
+                    if (shimmerDiv) shimmerDiv.style.display = 'none';
+                });
+            });
+
+            // Filter chips functionality for search results
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    const filter = chip.dataset.filter;
+                    cards.forEach(card => {
+                        card.style.display = filter === 'all' || card.dataset.type === filter ? 'block' : 'none';
+                    });
+                    console.log('Filter applied after search:', { filter });
+                });
+            });
+
+            console.log('Search completed:', { location: locationInput, type: typeInput, results: properties.length });
+        } catch (error) {
+            console.error('Search error:', {
+                message: error.message,
+                url: `/api/properties/search?${query.toString()}`,
+                stack: error.stack
+            });
+            propertyGrid.innerHTML = `<p class="text-center text-red-600">Error searching properties: ${error.message}</p>`;
+        }
+    });
+
+    // Card animation and shimmer
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                const shimmerDiv = entry.target.querySelector('.shimmer');
+                if (shimmerDiv) shimmerDiv.style.display = 'none';
+                console.log('Card visible:', { id: entry.target.dataset.type });
+            }
+        });
+    }, { threshold: 0.1 });
+
+    // Bottom nav active state
+    const currentPath = window.location.pathname;
+    document.querySelectorAll('.bottom-nav a').forEach(link => {
+        if (link.href.includes(currentPath)) {
+            link.classList.add('active');
+        }
+        link.addEventListener('click', () => {
+            document.querySelectorAll('.bottom-nav a').forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            console.log('Bottom nav link clicked:', { href: link.href });
+        });
+    });
+
+    // Bottom nav hide on scroll (Desktop Only)
+    const bottomNav = document.querySelector('.bottom-nav');
+    let isScrolling;
+    let lastScrollTop = 0;
+
+    window.addEventListener('scroll', () => {
+        if (window.matchMedia("(min-width: 1024px)").matches) {
+            bottomNav.classList.add('bottom-nav-hidden');
+            clearTimeout(isScrolling);
+            isScrolling = setTimeout(() => {
+                requestAnimationFrame(() => {
+                    bottomNav.classList.remove('bottom-nav-hidden');
+                });
+            }, 3000);
+        }
+    });
+
+    // Back to Top Button Functionality
+    const backToTopButton = document.querySelector('.back-to-top');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backToTopButton.classList.add('visible');
+        } else {
+            backToTopButton.classList.remove('visible');
+        }
+    });
+
+    backToTopButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        console.log('Back to top clicked');
+    });
+
+    // Load content when the page loads
+    document.addEventListener('DOMContentLoaded', () => loadContent());
+</script>
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" class="dark:bg-gray-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="INTO REALTORS Admin Control Panel">
+    <title>INTO REALTORS | Admin cPanel</title>
+    <link rel="icon" type="image/png" href="/admin/logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .image-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .image-preview {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .image-preview .remove-image {
+            position: absolute;
+            top: -0.5rem;
+            right: -0.5rem;
+            background: #FF5A3C;
+            color: white;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        .image-preview .remove-image:hover {
+            background: #e04a2f;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #FF5A3C;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .toast {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); }
+            to { transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body class="font-sans antialiased transition-colors duration-300 bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <!-- Loader -->
+    <div id="loader" class="fixed inset-0 bg-gray-800 dark:bg-gray-900 bg-opacity-75 flex items-center justify-center z-50 hidden">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-[4.5rem] right-4 z-[60] flex flex-col gap-2 pointer-events-none md:top-4"></div>
+
+    <!-- Beep Sound for New Messages -->
+    <audio id="beep-alert" src="/admin/beep.mp3" preload="auto"></audio>
+
+    <!-- Login Section -->
+    <section id="login-section" class="min-h-screen flex items-center justify-center px-4">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg w-full max-w-sm transform transition-all duration-300">
+            <img src="/admin/logo.png" alt="INTO REALTORS Logo" class="mx-auto mb-4 h-16 w-auto">
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-white text-center mb-6">INTO REALTORS Admin</h1>
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Username</label>
+                    <input type="text" id="username" class="mt-1 w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF5A3C] bg-gray-50 dark:bg-gray-700 dark:border-gray-600" required>
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+                    <input type="password" id="password" class="mt-1 w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF5A3C] bg-gray-50 dark:bg-gray-700 dark:border-gray-600" required>
+                </div>
+                <button type="submit" class="w-full bg-[#FF5A3C] text-white py-2 rounded-lg hover:bg-[#e04a2f] transition duration-300 font-medium">Login</button>
+                <p id="login-error" class="text-red-600 dark:text-red-400 text-sm text-center hidden"></p>
+            </form>
+        </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard-section" class="hidden min-h-screen flex flex-col">
+        <!-- Mobile/Tablet Header -->
+        <header class="md:hidden fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-md p-4 z-50 flex justify-between items-center">
+            <span class="text-[#FF5A3C] font-bold text-lg">INTO REALTORS</span>
+            <div class="flex items-center space-x-3">
+             
+                <button id="mobile-logout-btn" class="flex items-center px-2 py-1 bg-[#FF5A3C] text-white rounded-lg hover:bg-[#e04a2f] transition duration-300 text-sm">
+                    <i class="fas fa-sign-out-alt mr-1"></i>
+                    Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- Sidebar (Desktop) -->
+        <aside class="bg-white dark:bg-gray-800 w-64 p-6 shadow-lg flex-shrink-0 transition-all duration-300 hidden md:block fixed top-0 left-0 h-full z-40">
+            <div class="flex items-center mb-8">
+                <span class="text-[#FF5A3C] font-bold text-xl">INTO REALTORS</span>
+            </div>
+            <nav class="space-y-2">
+                <button data-tab="dashboard" class="tab-btn flex items-center w-full px-4 py-3 rounded-lg hover:bg-[#FF5A3C] hover:text-white transition duration-300 active">
+                    <i class="fas fa-tachometer-alt mr-2"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button data-tab="properties" class="tab-btn flex items-center w-full px-4 py-3 rounded-lg hover:bg-[#FF5A3C] hover:text-white transition duration-300">
+                    <i class="fas fa-home mr-2"></i>
+                    <span>Properties</span>
+                </button>
+                <button data-tab="testimonials" class="tab-btn flex items-center w-full px-4 py-3 rounded-lg hover:bg-[#FF5A3C] hover:text-white transition duration-300">
+                    <i class="fas fa-quote-left mr-2"></i>
+                    <span>Testimonials</span>
+                </button>
+                <button data-tab="blogs" class="tab-btn flex items-center w-full px-4 py-3 rounded-lg hover:bg-[#FF5A3C] hover:text-white transition duration-300">
+                    <i class="fas fa-blog mr-2"></i>
+                    <span>Blogs</span>
+                </button>
+                <button data-tab="contacts" class="tab-btn flex items-center w-full px-4 py-3 rounded-lg hover:bg-[#FF5A3C] hover:text-white transition duration-300">
+                    <i class="fas fa-envelope mr-2"></i>
+                    <span>Contacts</span>
+                    <span id="contacts-badge" class="hidden ml-2 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </button>
+            </nav>
+            <div class="mt-auto">
+                
+                <button id="logout-btn" class="flex items-center w-full px-4 py-3 rounded-lg bg-[#FF5A3C] text-white hover:bg-[#e04a2f] transition duration-300">
+                    <i class="fas fa-sign-out-alt mr-2"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Bottom Navigation (Mobile/Tablet) -->
+        <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-md h-14 flex justify-around items-center z-50">
+            <button data-tab="dashboard" class="tab-btn flex flex-col items-center text-[#FF5A3C] text-xs active">
+                <i class="fas fa-tachometer-alt text-lg"></i>
+                <span>Dashboard</span>
+            </button>
+            <button data-tab="properties" class="tab-btn flex flex-col items-center text-gray-600 dark:text-gray-300 text-xs">
+                <i class="fas fa-home text-lg"></i>
+                <span>Properties</span>
+            </button>
+            <button data-tab="testimonials" class="tab-btn flex flex-col items-center text-gray-600 dark:text-gray-300 text-xs">
+                <i class="fas fa-quote-left text-lg"></i>
+                <span>Testimonials</span>
+            </button>
+            <button data-tab="blogs" class="tab-btn flex flex-col items-center text-gray-600 dark:text-gray-300 text-xs">
+                <i class="fas fa-blog text-lg"></i>
+                <span>Blogs</span>
+            </button>
+            <button data-tab="contacts" class="tab-btn flex flex-col items-center text-gray-600 dark:text-gray-300 text-xs relative">
+                <i class="fas fa-envelope text-lg"></i>
+                <span>Contacts</span>
+                <span id="mobile-contacts-badge" class="hidden absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">0</span>
+            </button>
+        </nav>
+
+        <!-- Floating Add Button (Mobile/Tablet) -->
+        <button id="mobile-add-btn" class="md:hidden fixed bottom-20 right-4 bg-[#FF5A3C] text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:bg-[#e04a2f] transition duration-300 z-50">
+            <i class="fas fa-plus text-xl"></i>
+        </button>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 pt-20 md:pt-6 md:ml-64 pb-16 md:pb-6">
+            <div class="container mx-auto">
+                <!-- Dashboard Tab -->
+                <div id="dashboard-tab" class="tab-content">
+                    <h2 class="text-xl font-bold mb-4">Dashboard</h2>
+                    <!-- Statistics Section -->
+                    <div class="mb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="card bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Listed Properties</h3>
+                            <p id="stats-properties" class="text-2xl font-bold text-[#FF5A3C]">0</p>
+                        </div>
+                        <div class="card bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-white">New Messages (Week)</h3>
+                            <p id="stats-messages" class="text-2xl font-bold text-[#FF5A3C]">0</p>
+                        </div>
+                        <div class="card bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Daily Visitors</h3>
+                            <p id="stats-visitors" class="text-2xl font-bold text-[#FF5A3C]">0</p>
+                        </div>
+                        <div class="card bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Total Blog Posts</h3>
+                            <p id="stats-blogs" class="text-2xl font-bold text-[#FF5A3C]">0</p>
+                        </div>
+                    </div>
+                    <!-- Properties Preview -->
+                    <div class="mb-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold">Recent Properties</h3>
+                            <button data-tab="properties" class="tab-btn text-[#FF5A3C] hover:underline text-sm">View All</button>
+                        </div>
+                        <div id="dashboard-property-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    </div>
+                    <!-- Blogs Preview -->
+                    <div class="mb-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold">Recent Blogs</h3>
+                            <button data-tab="blogs" class="tab-btn text-[#FF5A3C] hover:underline text-sm">View All</button>
+                        </div>
+                        <div id="dashboard-blog-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    </div>
+                    <!-- Contacts Preview -->
+                    <div class="mb-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold">Recent Contacts</h3>
+                            <button data-tab="contacts" class="tab-btn text-[#FF5A3C] hover:underline text-sm">View All</button>
+                        </div>
+                        <div id="dashboard-contact-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    </div>
+                </div>
+
+                <!-- Properties Tab -->
+                <div id="properties-tab" class="tab-content hidden">
+                    <button id="add-property-btn" class="hidden md:inline-block mb-4 bg-[#FF5A3C] text-white px-4 py-2 rounded-lg hover:bg-[#e04a2f] transition duration-300">Add Property</button>
+                    <div id="property-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    <div id="properties-pagination" class="mt-4 flex space-x-2 justify-center"></div>
+                </div>
+
+                <!-- Testimonials Tab -->
+                <div id="testimonials-tab" class="tab-content hidden">
+                    <button id="add-testimonial-btn" class="hidden md:inline-block mb-4 bg-[#FF5A3C] text-white px-4 py-2 rounded-lg hover:bg-[#e04a2f] transition duration-300">Add Testimonial</button>
+                    <div id="testimonial-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    <div id="testimonials-pagination" class="mt-4 flex space-x-2 justify-center"></div>
+                </div>
+
+                <!-- Blogs Tab -->
+                <div id="blogs-tab" class="tab-content hidden">
+                    <button id="add-blog-btn" class="hidden md:inline-block mb-4 bg-[#FF5A3C] text-white px-4 py-2 rounded-lg hover:bg-[#e04a2f] transition duration-300">Add Blog</button>
+                    <div id="blog-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    <div id="blogs-pagination" class="mt-4 flex space-x-2 justify-center"></div>
+                </div>
+
+                <!-- Contacts Tab -->
+                <div id="contacts-tab" class="tab-content hidden">
+                    <button id="add-contact-btn" class="hidden md:inline-block mb-4 bg-[#FF5A3C] text-white px-4 py-2 rounded-lg hover:bg-[#e04a2f] transition duration-300">Add Contact</button>
+                    <div id="contact-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    <div id="contacts-pagination" class="mt-4 flex space-x-2 justify-center"></div>
+                </div>
+            </div>
+        </main>
+    </section>
+
+    <!-- Modal for Add/Edit Forms -->
+    <div id="modal" class="fixed inset-0 bg-gray-800 dark:bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-50 hidden overflow-y-auto">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl w-full max-w-md transform transition-all duration-300">
+            <h2 id="modal-title" class="text-xl font-bold mb-4 text-gray-800 dark:text-white"></h2>
+            <form id="modal-form" class="space-y-4" enctype="multipart/form-data">
+                <div id="modal-fields" class="grid gap-4"></div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="modal-cancel" class="px-3 py-2 bg-gray-200 dark:bg-gray-600 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">Cancel</button>
+                    <button type="submit" id="modal-submit" class="px-3 py-2 bg-[#FF5A3C] text-white rounded-lg hover:bg-[#e04a2f] transition duration-300">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for View Mode -->
+    <div id="view-modal" class="fixed inset-0 bg-gray-800 dark:bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-50 hidden overflow-y-auto">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl w-full max-w-md transform transition-all duration-300">
+            <h2 id="view-modal-title" class="text-xl font-bold mb-4 text-gray-800 dark:text-white"></h2>
+            <div id="view-modal-content" class="space-y-4"></div>
+            <div class="flex justify-end mt-4">
+                <button type="button" id="view-modal-close" class="px-3 py-2 bg-gray-200 dark:bg-gray-600 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Delete Confirmation -->
+    <div id="delete-modal" class="fixed inset-0 bg-gray-800 dark:bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl w-full max-w-sm transform transition-all duration-300">
+            <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-white">Confirm Deletion</h2>
+            <p id="delete-modal-message" class="text-sm text-gray-600 dark:text-gray-400 mb-4"></p>
+            <div class="flex justify-end space-x-3">
+                <button type="button" id="delete-modal-cancel" class="px-3 py-2 bg-gray-200 dark:bg-gray-600 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">Cancel</button>
+                <button type="button" id="delete-modal-confirm" class="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-300">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/admin/admin.js"></script>
+    <script>
+        // Theme Toggle
+        const toggleTheme = () => {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            const themeText = document.getElementById('theme-text');
+            const themeIcon = document.getElementById('theme-icon');
+            const desktopThemeText = document.getElementById('desktop-theme-text');
+            const desktopThemeIcon = document.getElementById('desktop-theme-icon');
+            if (themeText && themeIcon) {
+                themeText.textContent = isDark ? 'Light' : 'Dark';
+                themeIcon.className = isDark ? 'fas fa-sun mr-1' : 'fas fa-moon mr-1';
+            }
+            if (desktopThemeText && desktopThemeIcon) {
+                desktopThemeText.textContent = isDark ? 'Toggle Light Mode' : 'Toggle Dark Mode';
+                desktopThemeIcon.className = isDark ? 'fas fa-sun mr-2' : 'fas fa-moon mr-2';
+            }
+        };
+
+        document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);
+        document.getElementById('mobile-theme-toggle')?.addEventListener('click', toggleTheme);
+
+        // Mobile Logout
+        document.getElementById('mobile-logout-btn')?.addEventListener('click', () => {
+            document.getElementById('logout-btn').click();
+        });
+
+        // Mobile Add Button
+        const mobileAddBtn = document.getElementById('mobile-add-btn');
+        mobileAddBtn?.addEventListener('click', () => {
+            const activeTab = document.querySelector('.tab-btn.active')?.dataset.tab;
+            if (activeTab && activeTab !== 'dashboard') {
+                editItem(activeTab);
+            }
+        });
+
+        // Load theme from localStorage
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+            const themeText = document.getElementById('theme-text');
+            const themeIcon = document.getElementById('theme-icon');
+            const desktopThemeText = document.getElementById('desktop-theme-text');
+            const desktopThemeIcon = document.getElementById('desktop-theme-icon');
+            if (themeText && themeIcon) {
+                themeText.textContent = 'Light';
+                themeIcon.className = 'fas fa-sun mr-1';
+            }
+            if (desktopThemeText && desktopThemeIcon) {
+                desktopThemeText.textContent = 'Toggle Light Mode';
+                desktopThemeIcon.className = 'fas fa-sun mr-2';
+            }
+        }
+    </script>
+</body>
+</html>

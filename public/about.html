@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn about INTO REALTORS, your trusted partner for premium real estate in Abuja.">
+    <title>INTO REALTORS | About Us</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <link rel="icon" type="image/png" href="/admin/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+       @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding-bottom: 5rem; /* Space for bottom nav */
+}
+
+/* Custom Scrollbar (Desktop Only) */
+@media (min-width: 1024px) {
+    html {
+        scrollbar-width: thin;
+        scrollbar-color: #FF5A3C #f1f5f9;
+    }
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #FF5A3C;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #e04a2f;
+    }
+}
+
+/* Loader and Shimmer */
+.loader {
+    width: 40px;
+    aspect-ratio: 1;
+    color: #FF5A3C;
+    position: relative;
+    background: radial-gradient(10px, currentColor 94%, #0000);
+    margin: 1rem auto;
+}
+
+.loader:before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background:
+        radial-gradient(9px at bottom right, #0000 94%, currentColor) top left,
+        radial-gradient(9px at bottom left, #0000 94%, currentColor) top right,
+        radial-gradient(9px at top right, #0000 94%, currentColor) bottom left,
+        radial-gradient(9px at top left, #0000 94%, currentColor) bottom right;
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    animation: l18 1.5s infinite cubic-bezier(0.3, 1, 0, 1);
+}
+
+@keyframes l18 {
+    33%  { inset: -10px; transform: rotate(0deg) }
+    66%  { inset: -10px; transform: rotate(90deg) }
+    100% { inset: 0; transform: rotate(90deg) }
+}
+
+.shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Scrollable Text Content */
+.content-container {
+    max-height: calc(100vh - 60px); /* Adjust for bottom nav height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    padding: 1rem;
+    margin-bottom: 60px; /* Prevent content from being hidden under bottom nav */
+}
+
+/* Hide Scrollbar for Clean Look */
+.content-container::-webkit-scrollbar {
+    display: none;
+}
+
+.content-container {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 6rem;
+    right: 1.5rem;
+    background: #FF5A3C;
+    color: white;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    z-index: 60;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover, .back-to-top:focus {
+    background: #e04a2f;
+    transform: scale(1.1);
+    outline: 2px solid #FF5A3C;
+}
+
+/* WhatsApp Floating Icon */
+.whatsapp-float {
+    position: fixed;
+    bottom: 10rem;
+    right: 1.5rem;
+    background: #25D366;
+    color: white;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    z-index: 60;
+}
+
+.whatsapp-float:hover, .whatsapp-float:focus {
+    background: #1EBE57;
+    transform: scale(1.1);
+    outline: 2px solid #25D366;
+}
+
+/* Hero Image */
+.hero-image {
+    width: 100%;
+    height: 20rem;
+    object-fit: cover;
+    border-radius: 0.75rem;
+}
+
+/* Statistics Section */
+.stats-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    background: white;
+    border-radius: 0.75rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.stats-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stats-item h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #FF5A3C;
+    margin-bottom: 0.5rem;
+}
+
+.stats-item p {
+    font-size: 0.875rem;
+    color: #4b5563;
+}
+
+/* Testimonials Carousel */
+.testimonials-carousel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    touch-action: pan-x;
+}
+
+.testimonials-container {
+    display: flex;
+    transition: transform 0.5s ease;
+    gap: 1rem;
+}
+
+.testimonial-card {
+    flex-shrink: 0;
+    width: 100%;
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-card img {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 1rem;
+}
+
+/* Blog Carousel */
+.blog-carousel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    touch-action: pan-x;
+}
+
+.blog-container {
+    display: flex;
+    transition: transform 0.5s ease;
+    gap: 1rem;
+}
+
+.blog-card {
+    flex-shrink: 0;
+    width: calc(100% - 1rem);
+    background: white;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.blog-card img {
+    width: 100%;
+    height: 10rem;
+    object-fit: cover;
+}
+
+.blog-card a {
+    display: inline-block;
+    background: #FF5A3C;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.blog-card a:hover, .blog-card a:focus {
+    background: #e04a2f;
+    outline: 2px solid #FF5A3C;
+}
+
+/* Carousel Navigation */
+.carousel-hover {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 20%;
+    z-index: 10;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.carousel-hover-left {
+    left: 0;
+}
+
+.carousel-hover-right {
+    right: 0;
+}
+
+.carousel-hover:hover::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2rem;
+    height: 2rem;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+}
+
+.carousel-hover-left:hover::after {
+    content: '\f053';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    left: 1rem;
+}
+
+.carousel-hover-right:hover::after {
+    content: '\f054';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    right: 1rem;
+}
+
+/* Bottom Nav Styles (Instagram-like Sizing for Phone View) */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem 0; /* Reduced padding for compact look */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+    transition: transform 0.3s ease;
+    height: 60px; /* Instagram-like height for mobile */
+}
+
+.bottom-nav-hidden {
+    transform: translateY(100%);
+}
+
+.bottom-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #4b5563;
+    text-decoration: none;
+    font-size: 0.625rem; /* Smaller font size (~10px) for mobile */
+    font-weight: 500;
+    padding: 0.5rem;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.bottom-nav a i {
+    font-size: 1.25rem; /* Smaller icon size (~24px) for mobile */
+    margin-bottom: 0.25rem;
+}
+
+.bottom-nav a:hover, .bottom-nav a.active, .bottom-nav a:focus {
+    color: #FF5A3C;
+    transform: translateY(-2px);
+}
+
+/* Get in Touch Button */
+.get-in-touch {
+    display: inline-block;
+    background: #FF5A3C;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background 0.3s ease;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.get-in-touch:hover, .get-in-touch:focus {
+    background: #e04a2f;
+    outline: 2px solid #FF5A3C;
+}
+
+/* Toast Notification */
+.toast {
+    position: fixed;
+    bottom: 4rem;
+    right: 1.5rem;
+    background: #FF5A3C;
+    color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 70;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 639px) {
+    .back-to-top {
+        bottom: 5rem; /* Adjusted for smaller bottom nav */
+        right: 1rem;
+        transform: scale(0.9);
+    }
+    .back-to-top:hover, .back-to-top:focus {
+        transform: scale(1);
+    }
+    .whatsapp-float {
+        bottom: 8.5rem; /* Adjusted for smaller bottom nav */
+        right: 1rem;
+        transform: scale(0.9);
+    }
+    .whatsapp-float:hover, .whatsapp-float:focus {
+        transform: scale(1);
+    }
+    .toast {
+        bottom: 12rem; /* Adjusted to avoid overlap with bottom nav and floating buttons */
+        right: 1rem;
+    }
+    .bottom-nav {
+        height: 60px; /* Consistent height for small screens */
+        padding: 0.5rem 0;
+    }
+    .bottom-nav a {
+        font-size: 0.625rem; /* Instagram-like text size */
+    }
+    .bottom-nav a i {
+        font-size: 1.25rem; /* Instagram-like icon size */
+    }
+}
+
+@media (min-width: 640px) {
+    .bottom-nav {
+        padding: 0.75rem 0;
+        height: 70px; /* Slightly taller for tablets */
+    }
+    .bottom-nav a {
+        font-size: 0.75rem;
+    }
+    .bottom-nav a i {
+        font-size: 1.5rem;
+    }
+    .testimonials-container, .blog-container {
+        gap: 1rem;
+    }
+    .blog-card, .testimonial-card {
+        width: calc(50% - 0.5rem);
+    }
+}
+
+@media (min-width: 1024px) {
+    .about-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+    .about-content > div {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .hero-image {
+        height: 30rem;
+    }
+    .stats-section {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    .bottom-nav {
+        max-width: 32rem;
+        margin: 0 auto;
+        border-radius: 15px;
+        height: 80px; /* Larger for desktop */
+    }
+    .bottom-nav a {
+        font-size: 0.875rem;
+    }
+    .bottom-nav a i {
+        font-size: 1.75rem;
+    }
+    .back-to-top, .whatsapp-float {
+        bottom: 2rem;
+        right: 2rem;
+    }
+    .whatsapp-float {
+        bottom: 6rem;
+    }
+    .testimonials-container, .blog-container {
+        gap: 1.5rem;
+    }
+    .blog-card, .testimonial-card {
+        width: calc(33.33% - 1rem);
+    }
+    .carousel-hover {
+        width: 15%;
+    }
+    .get-in-touch {
+        padding: 0.75rem 1.25rem;
+    }
+}
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation -->
+    <nav class="sticky top-0 z-50 bg-white shadow-md py-3 px-4 flex justify-between items-center" role="navigation" aria-label="Main navigation">
+        <div class="text-center flex-1">
+            <span class="text-[#FF5A3C] font-bold text-xl">INTO REALTORS</span>
+        </div>
+    </nav>
+
+    <!-- About Us Section -->
+    <section class="py-10 px-4 bg-gray-50">
+        <div class="container mx-auto">
+            <!-- Hero Image -->
+            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80" alt="Modern office building in Abuja" class="hero-image mb-6">
+
+            <!-- Statistics Section -->
+            <div class="stats-section">
+                <div class="stats-item">
+                    <h3 data-count="17">0</h3>
+                    <p>Number of Estates</p>
+                </div>
+                <div class="stats-item">
+                    <h3 data-count="700000">0</h3>
+                    <p>Number of Allocations</p>
+                </div>
+                <div class="stats-item">
+                    <h3 data-count="3">0</h3>
+                    <p>Years of Experience</p>
+                </div>
+                <div class="stats-item">
+                    <h3 data-count="5000">0</h3>
+                    <p>Raising Realtors</p>
+                </div>
+            </div>
+
+            <!-- About Content -->
+            <div class="about-content bg-white rounded-xl shadow-md p-6 mb-8">
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">WHO WE ARE: INTO REALTORS LTD</h1>
+                    <p class="text-sm text-gray-600 mb-4">
+                        We are a passionate investment company dedicated to creating, preserving, and sustaining investor wealth through real estate.
+                    </p>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Providing tailored solutions to customers' needs, preferences, and satisfaction is our priority. This shapes all aspects of our services.
+                    </p>
+                    <p class="text-sm text-gray-600">
+                        Integrity is our cornerstone. We uphold honesty, transparency, and trustworthiness in every interaction with our valued customers, ensuring your satisfaction and peace of mind every step of the way.
+                    </p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600 mb-4">
+                        At Into Realtors, professionalism is the bedrock of our service. With a team of skilled experts, we uphold the highest standards of conduct, reliability, and expertise in every interaction. Count on us to deliver exceptional service with integrity and competence.
+                    </p>
+                    <p class="text-sm text-gray-600 mb-4">
+                        At Into, reliability is our promise to you. We understand the importance of delivering consistent, dependable service that you can rely on. From timely responses to reliable products, we are dedicated to earning your trust and ensuring your peace of mind every step of the way.
+                    </p>
+                    <a href="https://wa.me/+23470314517217?text=Hello, I'm interested in learning more about INTO REALTORS." class="mt-6 get-in-touch" aria-label="Contact us via WhatsApp">
+                        Get in Touch
+                    </a>
+                </div>
+            </div>
+
+            <!-- Testimonials Section -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-800 mb-4 text-center">What Our Clients Say</h2>
+                <div class="testimonials-carousel">
+                    <div class="testimonials-container">
+                        <div class="loader"></div>
+                    </div>
+                    <div class="carousel-hover carousel-hover-left"></div>
+                    <div class="carousel-hover carousel-hover-right"></div>
+                </div>
+            </div>
+
+            <!-- Blog Carousel -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-800 mb-4 text-center">Latest Blog Posts</h2>
+                <div class="blog-carousel">
+                    <div class="blog-container">
+                        <div class="loader"></div>
+                    </div>
+                    <div class="carousel-hover carousel-hover-left"></div>
+                    <div class="carousel-hover carousel-hover-right"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WhatsApp Floating Icon -->
+    <a href="https://wa.me/+23470314517217?text=Hello, I'm interested in learning more about INTO REALTORS." id="whatsapp-float" class="whatsapp-float" aria-label="Contact us via WhatsApp">
+        <i class="fab fa-whatsapp text-xl"></i>
+    </a>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-chevron-up text-xl"></i>
+    </a>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" role="navigation" aria-label="Bottom navigation">
+        <a href="index.html">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="listing.html">
+            <i class="fas fa-list"></i>
+            <span>Listing</span>
+        </a>
+        <a href="about-us.html" class="active">
+            <i class="fas fa-info-circle"></i>
+            <span>About</span>
+        </a>
+        <a href="contact.html">
+            <i class="fab fa-whatsapp"></i>
+            <span>Contact</span>
+        </a>
+    </nav>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Toast Notification Function
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }, 100);
+        }
+
+        // Back to Top Button Functionality
+        const backToTopButton = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+
+        backToTopButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Bottom Nav Active State
+        const currentPath = window.location.pathname;
+        document.querySelectorAll('.bottom-nav a').forEach(link => {
+            if (link.href.includes(currentPath)) {
+                link.classList.add('active');
+            }
+            link.addEventListener('click', () => {
+                document.querySelectorAll('.bottom-nav a').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+
+        // Bottom Nav Hide on Scroll (Desktop Only)
+        const bottomNav = document.querySelector('.bottom-nav');
+        let isScrolling;
+        window.addEventListener('scroll', () => {
+            if (window.matchMedia("(min-width: 1024px)").matches) {
+                bottomNav.classList.add('bottom-nav-hidden');
+                clearTimeout(isScrolling);
+                isScrolling = setTimeout(() => {
+                    requestAnimationFrame(() => {
+                        bottomNav.classList.remove('bottom-nav-hidden');
+                    });
+                }, 2000);
+            }
+        });
+
+        // Fallback Data
+        const fallbackTestimonials = [
+            {
+                _id: '507f1f77bcf86cd799439011',
+                id: '123e4567-e89b-12d3-a456-426614174000',
+                quote: "INTO REALTORS made finding my dream home in Abuja seamless and stress-free. Their professionalism is unmatched!",
+                author: "Sarah Johnson",
+                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
+                alt: "Client 1"
+            },
+            {
+                _id: '507f1f77bcf86cd799439012',
+                id: '123e4567-e89b-12d3-a456-426614174001',
+                quote: "The team at INTO REALTORS was incredibly helpful in securing a shortlet apartment in Asokoro. Highly recommend!",
+                author: "Ahmed Musa",
+                image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
+                alt: "Client 2"
+            },
+            {
+                _id: '507f1f77bcf86cd799439013',
+                id: '123e4567-e89b-12d3-a456-426614174002',
+                quote: "Their expertise and dedication helped us invest in the perfect property. Thank you, INTO REALTORS!",
+                author: "Chioma Okeke",
+                image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80",
+                alt: "Client 3"
+            }
+        ];
+
+        const fallbackBlogs = [
+            {
+                _id: '507f1f77bcf86cd799439014',
+                id: '123e4567-e89b-12d3-a456-426614174003',
+                title: "Top 5 Tips for Buying Property in Abuja",
+                description: "Discover expert advice to navigate the Abuja real estate market and find your dream home.",
+                content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                image: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+                alt: "Blog Post 1"
+            },
+            {
+                _id: '507f1f77bcf86cd799439015',
+                id: '123e4567-e89b-12d3-a456-426614174004',
+                title: "Why Shortlets Are Perfect for Travelers",
+                description: "Learn why shortlet apartments in Abuja offer convenience and luxury for short-term stays.",
+                content: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+                alt: "Blog Post 2"
+            },
+            {
+                _id: '507f1f77bcf86cd799439016',
+                id: '123e4567-e89b-12d3-a456-426614174005',
+                title: "Investing in Abuja’s Real Estate Market",
+                description: "Explore the opportunities and benefits of investing in Abuja’s growing property market.",
+                content: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+                image: "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+                alt: "Blog Post 3"
+            }
+        ];
+
+        // Fetch with Timeout
+        async function fetchWithTimeout(url, timeout = 3000) {
+            const controller = new AbortController();
+            const id = setTimeout(() => controller.abort(), timeout);
+            try {
+                const response = await fetch(url, { signal: controller.signal });
+                clearTimeout(id);
+                return response;
+            } catch (error) {
+                clearTimeout(id);
+                throw error;
+            }
+        }
+
+        // Fetch Testimonials
+        async function fetchTestimonials() {
+            const testimonialsCarousel = document.querySelector('.testimonials-carousel');
+            try {
+                const response = await fetchWithTimeout('https://intorealtors.onrender.com/api/testimonials');
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    console.error(`Fetch testimonials failed: Status ${response.status}, ${JSON.stringify(errorData)}`);
+                    throw new Error(errorData.error || `Failed to fetch testimonials (Status: ${response.status})`);
+                }
+                const data = await response.json();
+                const testimonials = data.testimonials || [];
+                if (!Array.isArray(testimonials) || testimonials.length === 0) {
+                    console.warn('No testimonials returned from server. Using fallback data.');
+                    throw new Error('Empty or invalid testimonials data');
+                }
+                return [...testimonials, ...testimonials]; // Duplicate for infinite loop
+            } catch (error) {
+                console.error('Error fetching testimonials:', error.message, error.stack);
+                testimonialsCarousel.innerHTML = ''; // Clear loader
+                showToast('Failed to load testimonials. Showing fallback content.');
+                return [...fallbackTestimonials, ...fallbackTestimonials];
+            }
+        }
+
+        // Fetch Blogs
+        async function fetchBlogs() {
+            const blogCarousel = document.querySelector('.blog-carousel');
+            try {
+                const response = await fetchWithTimeout('https://intorealtors.onrender.com/api/blogs');
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    console.error(`Fetch blogs failed: Status ${response.status}, ${JSON.stringify(errorData)}`);
+                    throw new Error(errorData.error || `Failed to fetch blogs (Status: ${response.status})`);
+                }
+                const data = await response.json();
+                const blogs = data.blogs || [];
+                if (!Array.isArray(blogs) || blogs.length === 0) {
+                    console.warn('No blogs returned from server. Using fallback data.');
+                    throw new Error('Empty or invalid blogs data');
+                }
+                return [...blogs, ...blogs]; // Duplicate for infinite loop
+            } catch (error) {
+                console.error('Error fetching blogs:', error.message, error.stack);
+                blogCarousel.innerHTML = ''; // Clear loader
+                showToast('Failed to load blogs. Showing fallback content.');
+                return [...fallbackBlogs, ...fallbackBlogs];
+            }
+        }
+
+        // Create Testimonial Card HTML
+        function createTestimonialCard(testimonial) {
+            return `
+                <div class="testimonial-card">
+                    <div class="relative w-16 h-16 mx-auto mb-4">
+                        <div class="shimmer w-full h-full rounded-full"></div>
+                        <img src="${testimonial.image}" alt="${testimonial.alt}" class="w-full h-full object-cover rounded-full" loading="lazy">
+                    </div>
+                    <p class="text-sm text-gray-600 mb-2">"${testimonial.quote}"</p>
+                    <p class="text-sm font-semibold text-gray-800">— ${testimonial.author}</p>
+                </div>
+            `;
+        }
+
+        // Create Blog Card HTML
+        function createBlogCard(blog) {
+            return `
+                <div class="blog-card">
+                    <div class="relative h-40">
+                        <div class="shimmer w-full h-full"></div>
+                        <img src="${blog.image}" alt="${blog.alt}" class="w-full h-full object-cover" loading="lazy">
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">${blog.title}</h3>
+                        <p class="text-sm text-gray-600 mb-3">${blog.description}</p>
+                        <a href="blog-details.html?id=${blog._id}" class="text-sm font-medium bg-[#FF5A3C] text-white px-4 py-2 rounded-full hover:bg-[#e04a2f] transition duration-300" aria-label="Read more about ${blog.title}">Read More</a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Carousel Setup (Infinite Loop, Swipe, Auto-Swipe on Mobile)
+        function setupCarousel(carousel, container, cards, getCurrent, setCurrent) {
+            if (!cards.length) {
+                console.warn('No cards available for carousel setup');
+                return;
+            }
+            const totalCards = cards.length / 2; // Original cards (before duplication)
+            let startX = 0;
+            let isDragging = false;
+            const threshold = 50; // Minimum swipe distance in pixels
+            let autoSwipeInterval;
+
+            function showItem(index, isTransition = true) {
+                container.style.transition = isTransition ? 'transform 0.5s ease' : 'none';
+                if (carousel.classList.contains('testimonials-carousel')) {
+                    container.style.transform = `translateX(-${index * (100 / totalCards)}%)`;
+                } else {
+                    const cardWidth = cards[0]?.offsetWidth || 300; // Fallback width
+                    container.style.transform = `translateX(-${index * (cardWidth + 16)}px)`; // Include gap
+                }
+                setCurrent(index);
+            }
+
+            function handleLoop() {
+                const current = getCurrent();
+                if (current >= totalCards) {
+                    setCurrent(current - totalCards);
+                    showItem(current - totalCards, false);
+                } else if (current < 0) {
+                    setCurrent(current + totalCards);
+                    showItem(current + totalCards, false);
+                }
+            }
+
+            // Click Navigation
+            carousel.querySelector('.carousel-hover-left').addEventListener('click', () => {
+                const current = getCurrent();
+                setCurrent(current - 1);
+                showItem(current - 1);
+                if (window.matchMedia("(max-width: 639px)").matches) {
+                    clearInterval(autoSwipeInterval);
+                    startAutoSwipe();
+                }
+            });
+
+            carousel.querySelector('.carousel-hover-right').addEventListener('click', () => {
+                const current = getCurrent();
+                setCurrent(current + 1);
+                showItem(current + 1);
+                if (window.matchMedia("(max-width: 639px)").matches) {
+                    clearInterval(autoSwipeInterval);
+                    startAutoSwipe();
+                }
+            });
+
+            // Swipe Navigation (Mobile Only)
+            if (window.matchMedia("(max-width: 639px)").matches) {
+                carousel.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
+                    isDragging = true;
+                    clearInterval(autoSwipeInterval);
+                });
+
+                carousel.addEventListener('touchmove', (e) => {
+                    if (!isDragging) return;
+                    e.preventDefault();
+                });
+
+                carousel.addEventListener('touchend', (e) => {
+                    if (!isDragging) return;
+                    const endX = e.changedTouches[0].clientX;
+                    const deltaX = startX - endX;
+                    const current = getCurrent();
+
+                    if (Math.abs(deltaX) > threshold) {
+                        if (deltaX > 0) {
+                            setCurrent(current + 1);
+                            showItem(current + 1);
+                        } else {
+                            setCurrent(current - 1);
+                            showItem(current - 1);
+                        }
+                    }
+                    isDragging = false;
+                    startAutoSwipe();
+                });
+
+                // Hover-to-Pause (Touch Interaction)
+                carousel.addEventListener('mouseenter', () => {
+                    clearInterval(autoSwipeInterval);
+                });
+
+                carousel.addEventListener('mouseleave', () => {
+                    startAutoSwipe();
+                });
+            }
+
+            // Auto-Swipe (Mobile Only)
+            function startAutoSwipe() {
+                if (window.matchMedia("(max-width: 639px)").matches) {
+                    autoSwipeInterval = setInterval(() => {
+                        const current = getCurrent();
+                        setCurrent(current + 1);
+                        showItem(current + 1);
+                        handleLoop();
+                    }, 10000);
+                }
+            }
+
+            startAutoSwipe();
+
+            // Handle Infinite Loop
+            container.addEventListener('transitionend', handleLoop);
+        }
+
+        // Load and Render Content
+        async function loadContent() {
+            const testimonialsCarousel = document.querySelector('.testimonials-carousel');
+            const testimonialsContainer = document.querySelector('.testimonials-container');
+            const blogCarousel = document.querySelector('.blog-carousel');
+            const blogContainer = document.querySelector('.blog-container');
+
+            // Load Testimonials
+            let testimonials = [];
+            try {
+                testimonials = await fetchTestimonials();
+            } catch (error) {
+                console.error('Testimonials fetch failed, using fallback:', error.message);
+            }
+            testimonialsContainer.innerHTML = testimonials.map(createTestimonialCard).join('');
+            const testimonialCards = document.querySelectorAll('.testimonial-card');
+            if (testimonialCards.length > 0) {
+                testimonialCards.forEach(card => {
+                    const img = card.querySelector('img');
+                    img.addEventListener('load', () => {
+                        img.classList.add('loaded');
+                        img.classList.remove('shimmer');
+                        const shimmerDiv = card.querySelector('.shimmer');
+                        if (shimmerDiv) shimmerDiv.style.display = 'none';
+                    });
+                    img.addEventListener('error', () => {
+                        console.warn(`Failed to load testimonial image: ${img.src}`);
+                        img.src = 'https://via.placeholder.com/100';
+                    });
+                });
+                setupCarousel(
+                    testimonialsCarousel,
+                    testimonialsContainer,
+                    testimonialCards,
+                    () => currentTestimonial,
+                    (index) => (currentTestimonial = index)
+                );
+            } else {
+                testimonialsCarousel.innerHTML = '<p class="text-center text-gray-600">No testimonials available.</p>';
+            }
+
+            // Load Blogs
+            let blogs = [];
+            try {
+                blogs = await fetchBlogs();
+            } catch (error) {
+                console.error('Blogs fetch failed, using fallback:', error.message);
+            }
+            blogContainer.innerHTML = blogs.map(createBlogCard).join('');
+            const blogCards = document.querySelectorAll('.blog-card');
+            if (blogCards.length > 0) {
+                blogCards.forEach(card => {
+                    const img = card.querySelector('img');
+                    img.addEventListener('load', () => {
+                        img.classList.add('loaded');
+                        img.classList.remove('shimmer');
+                        const shimmerDiv = card.querySelector('.shimmer');
+                        if (shimmerDiv) shimmerDiv.style.display = 'none';
+                    });
+                    img.addEventListener('error', () => {
+                        console.warn(`Failed to load blog image: ${img.src}`);
+                        img.src = 'https://via.placeholder.com/1170x400';
+                    });
+                });
+                setupCarousel(
+                    blogCarousel,
+                    blogContainer,
+                    blogCards,
+                    () => currentBlog,
+                    (index) => (currentBlog = index)
+                );
+            } else {
+                blogCarousel.innerHTML = '<p class="text-center text-gray-600">No blog posts available.</p>';
+            }
+        }
+
+        // Statistics Counting Animation
+        const statsItems = document.querySelectorAll('.stats-item h3');
+        statsItems.forEach(item => {
+            const endValue = parseInt(item.getAttribute('data-count'));
+            let startValue = 0;
+            const duration = 2000;
+            const increment = endValue / (duration / 16);
+            let current = startValue;
+
+            const updateCount = () => {
+                current += increment;
+                if (current >= endValue) {
+                    current = endValue;
+                    if (endValue === 700000) {
+                        item.textContent = '700K+';
+                    } else {
+                        item.textContent = Math.floor(current) + '+';
+                    }
+                } else {
+                    item.textContent = Math.floor(current);
+                    requestAnimationFrame(updateCount);
+                }
+            };
+
+            const observer = new IntersectionObserver(entries => {
+                if (entries[0].isIntersecting) {
+                    requestAnimationFrame(updateCount);
+                    observer.unobserve(item);
+                }
+            }, { threshold: 0.5 });
+
+            observer.observe(item);
+        });
+
+        // Initialize Carousels
+        let currentTestimonial = 0;
+        let currentBlog = 0;
+
+        // Load Content
+        loadContent();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Find premium properties in Abuja with INTO REALTORS. Explore verified listings for sale, rent, and shortlets in top locations like Karsana.">
+    <title>INTO REALTORS | Find Your Perfect Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <link rel="icon" type="image/png" href="/admin/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80">
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80">
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80">
+    <style>
+     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    margin: 0;
+}
+
+/* Custom Scrollbar (Desktop Only) */
+@media (min-width: 1024px) {
+    html {
+        scrollbar-width: thin;
+        scrollbar-color: #FF5A3C #f1f5f9;
+    }
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #FF5A3C;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #e04a2f;
+    }
+}
+
+/* Shimmer Loading Effect */
+.shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.shimmer-text {
+    color: transparent;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Filter Chips */
+.filter-chip {
+    transition: all 0.3s ease;
+}
+
+.filter-chip.active {
+    background-color: #FF5A3C;
+    color: white;
+}
+
+.filter-chip:hover, .filter-chip:focus {
+    background-color: #e04a2f;
+    color: white;
+    outline: 2px solid #FF5A3C;
+}
+
+/* Cards (Properties and Services) */
+.property-card, .service-card {
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.property-card.visible, .service-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.property-card:hover, .service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* View Details Button */
+.view-details {
+    display: inline-block;
+    background: #FF5A3C;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+    margin-top: 0.5rem;
+}
+
+.view-details:hover, .view-details:focus {
+    background: #e04a2f;
+    outline: 2px solid #FF5A3C;
+    transform: scale(1.05);
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    min-height: 32rem;
+    width: 100%;
+    overflow: hidden;
+}
+
+.hero-overlay {
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.15) 100%);
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Scrollable Text Content */
+.content-container {
+    max-height: calc(100vh - 60px); /* Adjust for bottom nav height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    padding: 1rem;
+    margin-bottom: 60px; /* Prevent content from being hidden under bottom nav */
+}
+
+/* Hide Scrollbar for Clean Look */
+.content-container::-webkit-scrollbar {
+    display: none;
+}
+
+.content-container {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.scroll-hidden::-webkit-scrollbar {
+    display: none;
+}
+
+/* Bottom Nav Styles (Instagram-like Sizing for Phone View) */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem 0; /* Reduced padding for compact look */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+    transition: transform 0.3s ease;
+    height: 60px; /* Instagram-like height for mobile */
+}
+
+.bottom-nav-hidden {
+    transform: translateY(100%);
+}
+
+.bottom-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #4b5563;
+    text-decoration: none;
+    font-size: 0.625rem; /* Smaller font size (~10px) for mobile */
+    font-weight: 500;
+    padding: 0.5rem;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.bottom-nav a i {
+    font-size: 1.25rem; /* Smaller icon size (~24px) for mobile */
+    margin-bottom: 0.25rem;
+}
+
+.bottom-nav a:hover, .bottom-nav a.active, .bottom-nav a:focus {
+    color: #FF5A3C;
+    transform: translateY(-2px);
+}
+
+/* Live Chat Button */
+.live-chat {
+    bottom: 9rem;
+    right: 1.5rem;
+    z-index: 60;
+    transition: transform 0.3s ease;
+}
+
+.live-chat:hover, .live-chat:focus {
+    transform: scale(1.1);
+    outline: 2px solid #22c55e;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 639px) {
+    .live-chat {
+        bottom: 5.5rem; /* Adjusted for smaller bottom nav */
+        right: 1rem;
+        transform: scale(0.9);
+    }
+    .live-chat:hover, .live-chat:focus {
+        transform: scale(1);
+    }
+    .bottom-nav {
+        height: 60px; /* Consistent height for small screens */
+        padding: 0.5rem 0;
+    }
+    .bottom-nav a {
+        font-size: 0.625rem; /* Instagram-like text size */
+    }
+    .bottom-nav a i {
+        font-size: 1.25rem; /* Instagram-like icon size */
+    }
+}
+
+@media (min-width: 640px) {
+    .bottom-nav {
+        padding: 0.75rem 0;
+        height: 70px; /* Slightly taller for tablets */
+    }
+    .bottom-nav a {
+        font-size: 0.75rem;
+    }
+    .bottom-nav a i {
+        font-size: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .bottom-nav {
+        max-width: 32rem;
+        margin: 0 auto;
+        border-radius: 15px;
+        height: 80px; /* Larger for desktop */
+    }
+    .bottom-nav a {
+        font-size: 0.875rem;
+    }
+    .bottom-nav a i {
+        font-size: 1.75rem;
+    }
+    .live-chat {
+        bottom: 8.5rem;
+        right: 2rem;
+    }
+}
+
+/* Hero Slideshow */
+.hero-slideshow {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+}
+
+.hero-slideshow img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.hero-slideshow img.active {
+    opacity: 0.6;
+}
+
+/* Hero Text and Caption */
+.hero-text {
+    position: relative;
+    z-index: 15;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease-out forwards;
+}
+
+.hero-text h1, .hero-text p, .hero-caption {
+    color: #ffffff;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
+}
+
+.hero-text h1 {
+    font-weight: 700;
+}
+
+.hero-text p {
+    font-weight: 500;
+}
+
+.hero-caption {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease, transform 1s ease;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    padding: 0.75rem 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: inline-block;
+    font-weight: 600;
+}
+
+.hero-caption.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Slideshow Controls */
+.slideshow-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 0.75rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    z-index: 15;
+}
+
+.slideshow-control:hover, .slideshow-control:focus {
+    background: rgba(0, 0, 0, 0.7);
+    outline: 2px solid #FF5A3C;
+}
+
+.slideshow-prev {
+    left: 1rem;
+}
+
+.slideshow-next {
+    right: 1rem;
+}
+
+.slideshow-dots {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    z-index: 15;
+}
+
+.slideshow-dot {
+    width: 0.75rem;
+    height: 0.75rem;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.slideshow-dot.active {
+    background: #ffffff;
+}
+
+.slideshow-dot:hover, .slideshow-dot:focus {
+    background: #ffffff;
+    outline: 2px solid #FF5A3C;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation -->
+    <nav class="sticky top-0 z-50 bg-white shadow-md py-3 px-4 flex justify-center items-center" role="navigation" aria-label="Main navigation">
+        <div class="text-center">
+            <span class="text-[#FF5A3C] font-bold text-xl">INTO REALTORS</span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" role="banner" aria-label="Hero section with property slideshow">
+        <div class="hero-overlay">
+            <div class="container mx-auto px-4 text-center hero-text">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">Find Your Perfect Home in Karsana</h1>
+                <p class="text-lg md:text-2xl max-w-2xl mx-auto mb-4">Discover premium properties with verified listings in Abuja’s top locations.</p>
+                <div class="hero-caption text-base md:text-xl font-medium"></div>
+                <!-- Search Bar -->
+                <form class="mt-6 flex flex-col sm:flex-row gap-4 max-w-lg mx-auto" role="search" aria-label="Property search">
+                    <input type="text" placeholder="Location (e.g., Karsana)" class="px-4 py-2 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#FF5A3C]" aria-label="Search by location">
+                    <select class="px-4 py-2 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#FF5A3C]" aria-label="Select property type">
+                        <option value="">Property Type</option>
+                        <option value="sale">For Sale</option>
+                        <option value="rent">For Rent</option>
+                        <option value="shortlet">Shortlet</option>
+                    </select>
+                    <button type="submit" class="bg-[#FF5A3C] text-white px-6 py-2 rounded-full hover:bg-[#e04a2f] transition duration-300 focus:outline-none focus:ring-2 focus:ring-[#FF5A3C]" aria-label="Search properties">
+                        Search
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="hero-slideshow">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80" 
+                 alt="Luxury 5-bedroom home in Karsana, Abuja" class="shimmer">
+            <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80" 
+                 alt="Modern 4-bedroom duplex in Abuja" class="shimmer">
+            <img src="https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80" 
+                 alt="Exclusive apartment in Asokoro, Abuja" class="shimmer">
+        </div>
+        <!-- Slideshow Controls -->
+        <button class="slideshow-control slideshow-prev" aria-label="Previous slide">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="slideshow-control slideshow-next" aria-label="Next slide">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="slideshow-dots">
+            <span class="slideshow-dot active" data-slide="0" aria-label="Go to slide 1"></span>
+            <span class="slideshow-dot" data-slide="1" aria-label="Go to slide 2"></span>
+            <span class="slideshow-dot" data-slide="2" aria-label="Go to slide 3"></span>
+        </div>
+    </section>
+
+    <!-- Our Services Section -->
+    <section class="py-10 px-4 bg-gray-50">
+        <div class="container mx-auto">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 text-center mb-8">Our Services</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Buy a Home -->
+                <div class="service-card bg-white rounded-xl overflow-hidden shadow-md transition duration-300 p-6">
+                    <h3 class="font-bold text-lg text-gray-800 mb-2">Buy a Home</h3>
+                    <p class="text-sm text-gray-600 mb-4 shimmer-text">Unlock your dream home with INTO REALTORS. Our expert team will guide you through the entire buying process, from property search to closing, ensuring you find the perfect place to call your own.</p>
+                    <a href="listing.html" class="inline-block bg-[#FF5A3C] text-white px-6 py-2 rounded-full hover:bg-[#e04a2f] transition duration-300 focus:outline-none focus:ring-2 focus:ring-[#FF5A3C]" aria-label="Find a home to buy">Find a Home</a>
+                </div>
+                <!-- Rent a Home -->
+                <div class="service-card bg-white rounded-xl overflow-hidden shadow-md transition duration-300 p-6">
+                    <h3 class="font-bold text-lg text-gray-800 mb-2">Rent a Home</h3>
+                    <p class="text-sm text-gray-600 mb-4 shimmer-text">Searching for a place to rent? Let INTO REALTORS be your guide. We offer a wide range of rental properties, each meticulously curated to meet your needs and preferences.</p>
+                    <a href="listing.html" class="inline-block bg-[#FF5A3C] text-white px-6 py-2 rounded-full hover:bg-[#e04a2f] transition duration-300 focus:outline-none focus:ring-2 focus:ring-[#FF5A3C]" aria-label="Find a home to rent">Find a Home</a>
+                </div>
+                <!-- Sell a Home -->
+                <div class="service-card bg-white rounded-xl overflow-hidden shadow-md transition duration-300 p-6">
+                    <h3 class="font-bold text-lg text-gray-800 mb-2">Sell a Home</h3>
+                    <p class="text-sm text-gray-600 mb-4 shimmer-text">Trust INTO REALTORS to showcase your property to the right audience. With our tailored marketing strategies and extensive network, we'll help you sell your property quickly and at the best possible price.</p>
+                    <a href="listing.html" class="inline-block bg-[#FF5A3C] text-white px-6 py-2 rounded-full hover:bg-[#e04a2f] transition duration-300 focus:outline-none focus:ring-2 focus:ring-[#FF5A3C]" aria-label="Sell your home">Find a Home</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Filters -->
+    <div class="sticky top-16 z-40 bg-white pt-3 pb-2 shadow-sm">
+        <div class="flex space-x-2 px-4 overflow-x-auto scroll-hidden">
+            <button class="filter-chip active px-4 py-2 bg-[#FF5A3C] text-white rounded-full whitespace-nowrap" data-filter="all">
+                All Properties
+            </button>
+            <button class="filter-chip px-4 py-2 bg-gray-100 text-gray-700 rounded-full whitespace-nowrap" data-filter="rent">
+                For Rent
+            </button>
+            <button class="filter-chip px-4 py-2 bg-gray-100 text-gray-700 rounded-full whitespace-nowrap" data-filter="sale">
+                For Sale
+            </button>
+            <button class="filter-chip px-4 py-2 bg-gray-100 text-gray-700 rounded-full whitespace-nowrap" data-filter="shortlet">
+                Shortlet
+            </button>
+        </div>
+    </div>
+
+    <!-- Featured Properties -->
+    <section class="py-10 px-4 bg-gray-50">
+        <div class="container mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Featured Properties</h2>
+                <button class="text-[#FF5A3C] text-sm font-medium hover:underline">See all</button>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="property-grid">
+                <!-- Properties will be dynamically inserted here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="py-16 px-4 bg-gradient-to-r from-[#FF5A3C] to-[#e04a2f] text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80" 
+                 alt="Background" class="w-full h-full object-cover" loading="lazy">
+        </div>
+        <div class="container mx-auto text-center relative z-10">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Why give excuses when you can easily earn in DOLLARS? - BECOME A PARTNER!</h2>
+            <p class="mb-8 text-lg max-w-xl mx-auto">Unsure where to invest, let us guide YOU! Our real estate package offers a secured 30% ROI in 9 months. Safe Secure and Reliable</p>
+            <button class="bg-white text-[#FF5A3C] hover:bg-gray-100 font-bold py-4 px-10 rounded-full transition duration-300 text-lg transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#FF5A3C]">
+                Start Your Search
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8 px-4">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div>
+                    <h3 class="text-xl font-bold mb-2">INTO REALTORS</h3>
+                    <div class="flex space-x-4">
+                        <a href="https://wa.me/+2347031451721" class="text-gray-200 hover:text-white" aria-label="Contact via WhatsApp">
+                            <i class="fab fa-whatsapp text-lg"></i>
+                        </a>
+                        <a href="index.html" class="text-gray-200 hover:text-white" aria-label="Contact via Telegram">
+                            <i class="fab fa-telegram text-lg"></i>
+                        </a>
+                        <a href="index.html" class="text-gray-200 hover:text-white" aria-label="Follow on Instagram">
+                            <i class="fab fa-instagram text-lg"></i>
+                        </a>
+                        <a href="index.html" class="text-gray-200 hover:text-white" aria-label="Follow on Twitter">
+                            <i class="fab fa-twitter text-lg"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <ul class="flex flex-wrap gap-4 text-sm text-gray-200" role="navigation" aria-label="Footer navigation">
+                        <li><a href="home.html" class="hover:text-white">Home</a></li>
+                        <li><a href="listing.html" class="hover:text-white">Listing</a></li>
+                        <li><a href="about.html" class="hover:text-white">About</a></li>
+                        <li><a href="contact.html" class="hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-6 text-center text-sm text-gray-200">
+                <p>All Rights Reserved @ Jimi Abraham 2025</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" role="navigation" aria-label="Bottom navigation">
+        <a href="home.html" class="active">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="listing.html">
+            <i class="fas fa-list"></i>
+            <span>Listing</span>
+        </a>
+        <a href="about.html">
+            <i class="fas fa-info-circle"></i>
+            <span>About</span>
+        </a>
+        <a href="contact.html">
+            <i class="fab fa-whatsapp"></i>
+            <span>Contact</span>
+        </a>
+    </nav>
+
+    <!-- Live Chat Button -->
+    <div class="live-chat fixed right-6 z-60">
+        <a href="https://wa.me/+2347031451721" class="w-14 h-14 bg-green-500 rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 transition duration-300" aria-label="Chat with us on WhatsApp">
+            <i class="fab fa-whatsapp text-white text-2xl"></i>
+        </a>
+    </div>
+
+    <script>
+        // Fetch properties from backend
+       // Fetch properties from backend
+async function fetchProperties(page = 1, limit = 10) {
+    try {
+        const response = await fetch(`https://intorealtors.onrender.com/api/properties?page=${page}&limit=${limit}`, {
+            headers: { 'Accept': 'application/json' }
+        });
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Network response was not ok');
+        }
+        const data = await response.json();
+        return data.properties; // Return only the properties array
+    } catch (error) {
+        console.error('Error fetching properties:', error.message);
+        document.getElementById('property-grid').innerHTML = `<p class="text-center text-red-600">Failed to load properties: ${error.message}</p>`;
+        return [];
+    }
+}
+
+// Search functionality
+document.querySelector('form[role="search"]').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const location = e.target.querySelector('input').value.trim();
+    const type = e.target.querySelector('select').value;
+    const propertyGrid = document.getElementById('property-grid');
+
+    // Input validation
+    if (!location && !type) {
+        propertyGrid.innerHTML = '<p class="text-center text-red-600">Please provide a location or property type.</p>';
+        return;
+    }
+    if (location && location.length < 3) {
+        propertyGrid.innerHTML = '<p class="text-center text-red-600">Location must be at least 3 characters long.</p>';
+        return;
+    }
+    if (type && !['sale', 'rent', 'shortlet'].includes(type)) {
+        propertyGrid.innerHTML = '<p class="text-center text-red-600">Invalid property type selected.</p>';
+        return;
+    }
+
+    const query = new URLSearchParams();
+    if (location) query.append('location', location);
+    if (type) query.append('type', type);
+    propertyGrid.innerHTML = '<p class="text-center text-gray-600">Searching...</p>';
+    try {
+        const response = await fetch(`https://intorealtors.onrender.com/api/properties/search?${query.toString()}`, {
+            headers: { 'Accept': 'application/json' }
+        });
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.log('Server error response:', errorData);
+            throw new Error(errorData.error || 'Search request failed');
+        }
+        const properties = await response.json();
+        propertyGrid.innerHTML = properties.length === 0
+            ? '<p class="text-center text-gray-600">No results found for your search.</p>'
+            : properties.map(property => {
+                // Update View Details link for search results
+                const typeColors = {
+                    sale: '#FF5A3C',
+                    rent: 'green-600',
+                    shortlet: 'yellow-600'
+                };
+                return `
+                    <div class="property-card bg-white rounded-xl overflow-hidden shadow-md transition duration-300 relative" data-type="${property.type}">
+                        <div class="relative h-48">
+                            <div class="absolute top-2 left-2 bg-${typeColors[property.type]} text-white text-xs font-bold px-2 py-1 rounded-md">
+                                ${property.type.charAt(0).toUpperCase() + property.type.slice(1)}
+                            </div>
+                            <div class="shimmer h-full w-full"></div>
+                            <img src="${property.image}" alt="${property.alt}" class="w-full h-full object-cover" loading="lazy">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg text-gray-800 mb-1">${property.price}</h3>
+                            <p class="text-sm text-gray-600 mb-2">${property.title}</p>
+                            <p class="text-xs text-gray-500 flex items-center mb-3">
+                                <i class="fas fa-map-marker-alt mr-1"></i> ${property.location}
+                            </p>
+                            <a href="listing.html" class="bg-[#FF5A3C] text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-[#e04a2f] transition duration-300 inline-block" aria-label="View details for ${property.title} in ${property.location}">View Details</a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+        const cards = document.querySelectorAll('.property-card');
+        cards.forEach((card, index) => {
+            observer.observe(card);
+            card.addEventListener('click', () => {
+                window.location.href = `property-details.html?id=${properties[index].id}`;
+            });
+            const img = card.querySelector('img');
+            img.addEventListener('load', () => {
+                img.classList.add('loaded');
+                img.classList.remove('shimmer');
+                const shimmerDiv = card.querySelector('.shimmer');
+                if (shimmerDiv) shimmerDiv.style.display = 'none';
+            });
+        });
+
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                const filter = chip.dataset.filter;
+                cards.forEach(card => {
+                    card.style.display = filter === 'all' || card.dataset.type === filter ? 'block' : 'none';
+                });
+            });
+        });
+    } catch (error) {
+        console.error('Search error:', error.message);
+        propertyGrid.innerHTML = `<p class="text-center text-red-600">Error searching properties: ${error.message}</p>`;
+    }
+});
+        // Function to create property card HTML
+        function createPropertyCard(property) {
+            const typeColors = {
+                sale: '#FF5A3C',
+                rent: 'green-600',
+                shortlet: 'yellow-600'
+            };
+            return `
+                <div class="property-card bg-white rounded-xl overflow-hidden shadow-md transition duration-300 relative" data-type="${property.type}">
+                    <div class="relative h-48">
+                        <div class="absolute top-2 left-2 bg-${typeColors[property.type]} text-white text-xs font-bold px-2 py-1 rounded-md">
+                            ${property.type.charAt(0).toUpperCase() + property.type.slice(1)}
+                        </div>
+                        <div class="shimmer h-full w-full"></div>
+                        <img src="${property.image}" alt="${property.alt}" class="w-full h-full object-cover" loading="lazy">
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg text-gray-800 mb-1">${property.price}</h3>
+                        <p class="text-sm text-gray-600 mb-2">${property.title}</p>
+                        <p class="text-xs text-gray-500 flex items-center mb-3">
+                            <i class="fas fa-map-marker-alt mr-1"></i> ${property.location}
+                        </p>
+                        <a href="listing.html" class="bg-[#FF5A3C] text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-[#e04a2f] transition duration-300 inline-block" aria-label="View details for ${property.title} in ${property.location}">View Details</a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Load and render properties
+        async function loadProperties() {
+            const propertyGrid = document.getElementById('property-grid');
+            propertyGrid.innerHTML = '<p class="text-center text-gray-600">Loading properties...</p>';
+            const properties = await fetchProperties();
+            if (properties.length === 0) {
+                propertyGrid.innerHTML = '<p class="text-center text-gray-600">No properties available at the moment.</p>';
+                return;
+            }
+            propertyGrid.innerHTML = properties.map(createPropertyCard).join('');
+
+            // Apply observer and click handlers to new property cards
+            const cards = document.querySelectorAll('.property-card');
+            cards.forEach((card, index) => {
+                observer.observe(card);
+                card.addEventListener('click', () => {
+                    window.location.href = `property-details.html?id=${properties[index].id}`;
+                });
+                const img = card.querySelector('img');
+                img.addEventListener('load', () => {
+                    img.classList.add('loaded');
+                    img.classList.remove('shimmer');
+                    const shimmerDiv = card.querySelector('.shimmer');
+                    if (shimmerDiv) shimmerDiv.style.display = 'none';
+                });
+            });
+
+            // Filter chips functionality
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    const filter = chip.dataset.filter;
+                    cards.forEach(card => {
+                        card.style.display = filter === 'all' || card.dataset.type === filter ? 'block' : 'none';
+                    });
+                });
+            });
+        }
+
+        // Search functionality
+        document.querySelector('form[role="search"]').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const location = e.target.querySelector('input').value.trim();
+            const type = e.target.querySelector('select').value;
+            const propertyGrid = document.getElementById('property-grid');
+
+            // Input validation
+            if (!location && !type) {
+                propertyGrid.innerHTML = '<p class="text-center text-red-600">Please provide a location or property type.</p>';
+                return;
+            }
+            if (location && location.length < 3) {
+                propertyGrid.innerHTML = '<p class="text-center text-red-600">Location must be at least 3 characters long.</p>';
+                return;
+            }
+            if (type && !['sale', 'rent', 'shortlet'].includes(type)) {
+                propertyGrid.innerHTML = '<p class="text-center text-red-600">Invalid property type selected.</p>';
+                return;
+            }
+
+            const query = new URLSearchParams();
+            if (location) query.append('location', location);
+            if (type) query.append('type', type);
+            propertyGrid.innerHTML = '<p class="text-center text-gray-600">Searching...</p>';
+            try {
+                const response = await fetch(`https://intorealtors.onrender.com/api/proproperties/search?${query.toString()}`, {
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.log('Server error response:', errorData);
+                    throw new Error(errorData.error || 'Search request failed');
+                }
+                const properties = await response.json();
+                propertyGrid.innerHTML = properties.length === 0
+                    ? '<p class="text-center text-gray-600">No results found for your search.</p>'
+                    : properties.map(property => {
+                        // Update View Details link for search results
+                        const typeColors = {
+                            sale: '#FF5A3C',
+                            rent: 'green-600',
+                            shortlet: 'yellow-600'
+                        };
+                        return `
+                            <div class="property-card bg-white rounded-xl overflow-hidden shadow-md transition duration-300 relative" data-type="${property.type}">
+                                <div class="relative h-48">
+                                    <div class="absolute top-2 left-2 bg-${typeColors[property.type]} text-white text-xs font-bold px-2 py-1 rounded-md">
+                                        ${property.type.charAt(0).toUpperCase() + property.type.slice(1)}
+                                    </div>
+                                    <div class="shimmer h-full w-full"></div>
+                                    <img src="${property.image}" alt="${property.alt}" class="w-full h-full object-cover" loading="lazy">
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="font-bold text-lg text-gray-800 mb-1">${property.price}</h3>
+                                    <p class="text-sm text-gray-600 mb-2">${property.title}</p>
+                                    <p class="text-xs text-gray-500 flex items-center mb-3">
+                                        <i class="fas fa-map-marker-alt mr-1"></i> ${property.location}
+                                    </p>
+                                    <a href="listing.html" class="bg-[#FF5A3C] text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-[#e04a2f] transition duration-300 inline-block" aria-label="View details for ${property.title} in ${property.location}">View Details</a>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                const cards = document.querySelectorAll('.property-card');
+                cards.forEach((card, index) => {
+                    observer.observe(card);
+                    card.addEventListener('click', () => {
+                        window.location.href = `property-details.html?id=${properties[index].id}`;
+                    });
+                    const img = card.querySelector('img');
+                    img.addEventListener('load', () => {
+                        img.classList.add('loaded');
+                        img.classList.remove('shimmer');
+                        const shimmerDiv = card.querySelector('.shimmer');
+                        if (shimmerDiv) shimmerDiv.style.display = 'none';
+                    });
+                });
+
+                document.querySelectorAll('.filter-chip').forEach(chip => {
+                    chip.addEventListener('click', () => {
+                        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                        chip.classList.add('active');
+                        const filter = chip.dataset.filter;
+                        cards.forEach(card => {
+                            card.style.display = filter === 'all' || card.dataset.type === filter ? 'block' : 'none';
+                        });
+                    });
+                });
+            } catch (error) {
+                console.error('Search error:', error.message);
+                propertyGrid.innerHTML = `<p class="text-center text-red-600">Error searching properties: ${error.message}</p>`;
+            }
+        });
+
+        // Hero Slideshow with Captions and Controls
+        const slides = document.querySelectorAll('.hero-slideshow img');
+        const caption = document.querySelector('.hero-caption');
+        const dots = document.querySelectorAll('.slideshow-dot');
+        const prevButton = document.querySelector('.slideshow-prev');
+        const nextButton = document.querySelector('.slideshow-next');
+        let currentSlide = 0;
+        let slideshowInterval;
+
+        const captions = [
+            'Luxury Living in Karsana',
+            'Modern Homes in Abuja',
+            'Exclusive Properties Await'
+        ];
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+                slide.classList.toggle('shimmer', i !== index && !slide.classList.contains('loaded'));
+            });
+            caption.textContent = captions[index];
+            caption.classList.remove('active');
+            setTimeout(() => caption.classList.add('active'), 10);
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+            currentSlide = index;
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        // Start slideshow
+        showSlide(currentSlide);
+        slideshowInterval = setInterval(nextSlide, 5000);
+
+        // Slideshow controls
+        prevButton.addEventListener('click', () => {
+            clearInterval(slideshowInterval);
+            prevSlide();
+            slideshowInterval = setInterval(nextSlide, 5000);
+        });
+
+        nextButton.addEventListener('click', () => {
+            clearInterval(slideshowInterval);
+            nextSlide();
+            slideshowInterval = setInterval(nextSlide, 5000);
+        });
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                clearInterval(slideshowInterval);
+                showSlide(parseInt(dot.dataset.slide));
+                slideshowInterval = setInterval(nextSlide, 5000);
+            });
+        });
+
+        // Remove shimmer on image load
+        slides.forEach(slide => {
+            slide.addEventListener('load', () => {
+                slide.classList.add('loaded');
+                slide.classList.remove('shimmer');
+            });
+        });
+
+        // Card animation and shimmer (Properties and Services)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    entry.target.querySelectorAll('.shimmer-text').forEach(text => {
+                        text.classList.remove('shimmer-text');
+                    });
+                    const shimmerDiv = entry.target.querySelector('.shimmer');
+                    if (shimmerDiv) shimmerDiv.style.display = 'none';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Observe service cards initially
+        document.querySelectorAll('.service-card').forEach(card => observer.observe(card));
+
+        // Bottom nav active state
+        const currentPath = window.location.pathname;
+        document.querySelectorAll('.bottom-nav a').forEach(link => {
+            if (link.href.includes(currentPath)) {
+                link.classList.add('active');
+            }
+            link.addEventListener('click', () => {
+                document.querySelectorAll('.bottom-nav a').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+
+        // Bottom nav hide on scroll (Desktop Only)
+        const bottomNav = document.querySelector('.bottom-nav');
+        let isScrolling;
+        let lastScrollTop = 0;
+
+        window.addEventListener('scroll', () => {
+            if (window.matchMedia("(min-width: 1024px)").matches) {
+                bottomNav.classList.add('bottom-nav-hidden');
+                clearTimeout(isScrolling);
+                isScrolling = setTimeout(() => {
+                    requestAnimationFrame(() => {
+                        bottomNav.classList.remove('bottom-nav-hidden');
+                    });
+                }, 2000);
+            }
+        });
+
+        // Load properties when the page loads
+        document.addEventListener('DOMContentLoaded', loadProperties);
+    </script>
+</body>
+</html>

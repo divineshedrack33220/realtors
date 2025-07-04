@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact INTO REALTORS for premium real estate services in Abuja.">
+    <title>INTO REALTORS | Contact Us</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <link rel="icon" type="image/png" href="/admin/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding-bottom: 7rem;
+    background: #f9fafb;
+}
+
+/* Custom Scrollbar (Desktop Only) */
+@media (min-width: 1024px) {
+    html {
+        scrollbar-width: thin;
+        scrollbar-color: #FF5A3C #f1f5f9;
+    }
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #FF5A3C;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #e04a2f;
+    }
+}
+
+/* Loader */
+.loader {
+    width: 40px;
+    aspect-ratio: 1;
+    color: #FF5A3C;
+    position: relative;
+    background: radial-gradient(10px, currentColor 94%, #0000);
+    margin: 1rem auto;
+    display: none;
+}
+
+.loader.active {
+    display: block;
+}
+
+.loader:before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background:
+        radial-gradient(9px at bottom right, #0000 94%, currentColor) top left,
+        radial-gradient(9px at bottom left, #0000 94%, currentColor) top right,
+        radial-gradient(9px at top right, #0000 94%, currentColor) bottom left,
+        radial-gradient(9px at top left, #0000 94%, currentColor) bottom right;
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    animation: l18 1.5s infinite cubic-bezier(0.3, 1, 0, 1);
+}
+
+@keyframes l18 {
+    33%  { inset: -10px; transform: rotate(0deg) }
+    66%  { inset: -10px; transform: rotate(90deg) }
+    100% { inset: 0; transform: rotate(90deg) }
+}
+
+/* Scrollable Text Content */
+.content-container {
+    max-height: calc(100vh - 60px); /* Adjust for bottom nav height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    padding: 1rem;
+    margin-bottom: 60px; /* Prevent content from being hidden under bottom nav */
+}
+
+/* Hide Scrollbar for Clean Look */
+.content-container::-webkit-scrollbar {
+    display: none;
+}
+
+.content-container {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 6rem;
+    right: 1.5rem;
+    background: #FF5A3C;
+    color: white;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    z-index: 60;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover, .back-to-top:focus {
+    background: #e04a2f;
+    transform: scale(1.1);
+    outline: 2px solid #FF5A3C;
+}
+
+/* WhatsApp Floating Icon */
+.whatsapp-float {
+    position: fixed;
+    bottom: 10rem;
+    right: 1.5rem;
+    background: #25D366;
+    color: white;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    z-index: 60;
+}
+
+.whatsapp-float:hover, .whatsapp-float:focus {
+    background: #1EBE57;
+    transform: scale(1.1);
+    outline: 2px solid #25D366;
+}
+
+/* Hero Image */
+.hero-image {
+    width: 100%;
+    height: 20rem;
+    object-fit: cover;
+    border-radius: 0.75rem;
+}
+
+/* Contact Info Card */
+.contact-info {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.contact-info-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.contact-info-item i {
+    color: #FF5A3C;
+    font-size: 1.5rem;
+}
+
+/* Map Card */
+.map-card {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.map-card iframe {
+    width: 100%;
+    height: 300px;
+    border: 0;
+    border-radius: 0.5rem;
+}
+
+/* Contact Form */
+.contact-form-card {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    color: #4b5563;
+    margin-bottom: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: #FF5A3C;
+    outline: none;
+}
+
+.contact-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.contact-form .error {
+    color: #dc2626;
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
+    display: none;
+}
+
+.contact-form .error.visible {
+    display: block;
+}
+
+.contact-form .success-message {
+    color: #16a34a;
+    font-size: 0.875rem;
+    margin-top: 1rem;
+    display: none;
+    text-align: center;
+}
+
+.contact-form .success-message.visible {
+    display: block;
+}
+
+.submit-button {
+    display: inline-block;
+    background: #FF5A3C;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background 0.3s ease;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+.submit-button:hover, .submit-button:focus {
+    background: #e04a2f;
+    outline: 2px solid #FF5A3C;
+}
+
+.submit-button:disabled {
+    background: #d1d5db;
+    cursor: not-allowed;
+}
+
+/* Toast Notification */
+.toast {
+    position: fixed;
+    bottom: 4rem;
+    right: 1.5rem;
+    background: #FF5A3C;
+    color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 70;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 1rem;
+    background: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+    font-size: 0.875rem;
+    color: #4b5563;
+    margin-top: 2rem;
+}
+
+/* Bottom Nav Styles (Instagram-like Sizing for Phone View) */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem 0; /* Reduced padding for compact look */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+    transition: transform 0.3s ease;
+    height: 60px; /* Instagram-like height for mobile */
+}
+
+.bottom-nav-hidden {
+    transform: translateY(100%);
+}
+
+.bottom-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #4b5563;
+    text-decoration: none;
+    font-size: 0.625rem; /* Smaller font size (~10px) for mobile */
+    font-weight: 500;
+    padding: 0.5rem;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.bottom-nav a i {
+    font-size: 1.25rem; /* Smaller icon size (~24px) for mobile */
+    margin-bottom: 0.25rem;
+}
+
+.bottom-nav a:hover, .bottom-nav a.active, .bottom-nav a:focus {
+    color: #FF5A3C;
+    transform: translateY(-2px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 639px) {
+    .back-to-top {
+        bottom: 5rem; /* Adjusted0px for smaller bottom nav */
+        right: 1rem;
+        transform: scale(0.9);
+    }
+    .back-to-top:hover, .back-to-top:focus {
+        transform: scale(1);
+    }
+    .whatsapp-float {
+        bottom: 8.5rem; /* Adjusted for smaller bottom nav */
+        right: 1rem;
+        transform: scale(0.9);
+    }
+    .whatsapp-float:hover, .whatsapp-float:focus {
+        transform: scale(1);
+    }
+    .toast {
+        bottom: 12rem; /* Adjusted to avoid overlap with bottom nav and floating buttons */
+        right: 1rem;
+    }
+    .bottom-nav {
+        height: 60px; /* Consistent height for small screens */
+        padding: 0.5rem 0;
+    }
+    .bottom-nav a {
+        font-size: 0.625rem; /* Instagram-like text size */
+    }
+    .bottom-nav a i {
+        font-size: 1.25rem; /* Instagram-like icon size */
+    }
+}
+
+@media (min-width: 640px) {
+    .bottom-nav {
+        padding: 0.75rem 0;
+        height: 70px; /* Slightly taller for tablets */
+    }
+    .bottom-nav a {
+        font-size: 0.75rem;
+    }
+    .bottom-nav a i {
+        font-size: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .hero-image {
+        max-width: 1200px;
+        height: 30rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .contact-section {
+        display: grid;
+        grid-template-columns: 6fr 4fr;
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .contact-form-card {
+        max-width: 600px;
+    }
+    .contact-info, .map-card {
+        max-width: 400px;
+    }
+    .submit-button {
+        padding: 0.75rem 1.25rem;
+        width: auto;
+    }
+    .map-card iframe {
+        height: 400px;
+    }
+    .bottom-nav {
+        max-width: 32rem;
+        margin: 0 auto;
+        border-radius: 15px;
+        height: 80px; /* Larger for desktop */
+    }
+    .bottom-nav a {
+        font-size: 0.875rem;
+    }
+    .bottom-nav a i {
+        font-size: 1.75rem;
+    }
+    .back-to-top, .whatsapp-float {
+        bottom: 2rem;
+        right: 2rem;
+    }
+    .whatsapp-float {
+        bottom: 6rem;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="sticky top-0 z-50 bg-white shadow-md py-3 px-4 flex justify-between items-center" role="navigation" aria-label="Main navigation">
+        <div class="text-center flex-1">
+            <span class="text-[#FF5A3C] font-bold text-xl">INTO REALTORS</span>
+        </div>
+    </nav>
+
+    <!-- Contact Us Section -->
+    <section class="py-10 px-4">
+        <div class="container mx-auto">
+            <!-- Hero Image -->
+            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80" alt="INTO REALTORS office in Abuja" class="hero-image mb-6">
+
+            <!-- Contact Content -->
+            <div class="contact-section">
+                <!-- Contact Form -->
+                <div class="contact-form-card">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4 text-center">Send Us a Message</h2>
+                    <form id="contact-form" class="contact-form">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+                            <p class="error" id="name-error">Please enter your name.</p>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" id="email" name="email" placeholder="Your Email" required>
+                            <p class="error" id="email-error">Please enter a valid email address.</p>
+                        </div>
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number (Optional)</label>
+                            <input type="tel" id="phone" name="phone" placeholder="Your Phone Number">
+                            <p class="error" id="phone-error">Please enter a valid phone number.</p>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                            <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+                            <p class="error" id="message-error">Please enter your message.</p>
+                        </div>
+                        <div class="loader" id="form-loader"></div>
+                        <button type="submit" class="submit-button" id="submit-button">Send Message</button>
+                        <p class="success-message" id="success-message">Your message has been sent successfully!</p>
+                    </form>
+                </div>
+
+                <!-- Contact Info and Map -->
+                <div class="contact-info-map">
+                    <!-- Contact Information -->
+                    <div class="contact-info">
+                        <h2 class="text-xl font-bold text-gray-800 mb-4 text-center">Get in Touch</h2>
+                        <div class="contact-info-item">
+                            <i class="fas fa-envelope"></i>
+                            <p class="text-sm text-gray-600">intorealtors@gmail.com</p>
+                        </div>
+                        <div class="contact-info-item">
+                            <i class="fas fa-phone"></i>
+                            <p class="text-sm text-gray-600">+234 7064552115</p>
+                        </div>
+                        <div class="contact-info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <p class="text-sm text-gray-600">B208, Ademola Adetokunbo Stick and Stone Plaza, Wuse 2. Abuja</p>
+                        </div>
+                    </div>
+
+                    <!-- Google Map -->
+                    <div class="map-card">
+                        <h2 class="text-xl font-bold text-gray-800 mb-4 text-center">Our Location</h2>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7879.656048323319!2d7.4786744!3d9.0794267!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x104e0a57e2798991%3A0xadd35a59dbd325c5!2sSticks%20%26%20Stones%20Plaza!5e0!3m2!1sen!2sng!4v1751386273639!5m2!1sen!2sng" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>Thank You</p>
+    </footer>
+
+    <!-- WhatsApp Floating Icon -->
+    <a href="https://wa.me/+23470314517217?text=Hello, I'm interested in learning more about INTO REALTORS." id="whatsapp-float" class="whatsapp-float" aria-label="Contact us via WhatsApp">
+        <i class="fab fa-whatsapp text-xl"></i>
+    </a>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-chevron-up text-xl"></i>
+    </a>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" role="navigation" aria-label="Bottom navigation">
+        <a href="index.html">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="listing.html">
+            <i class="fas fa-list"></i>
+            <span>Listing</span>
+        </a>
+        <a href="about-us.html">
+            <i class="fas fa-info-circle"></i>
+            <span>About</span>
+        </a>
+        <a href="contact.html" class="active">
+            <i class="fab fa-whatsapp"></i>
+            <span>Contact</span>
+        </a>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Toast Notification Function
+            function showToast(message, isError = false) {
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.textContent = message;
+                if (isError) toast.style.background = '#dc2626';
+                document.body.appendChild(toast);
+                setTimeout(() => {
+                    toast.classList.add('show');
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                        setTimeout(() => toast.remove(), 300);
+                    }, 3000);
+                }, 100);
+            }
+
+            // Back to Top Button Functionality
+            const backToTopButton = document.querySelector('.back-to-top');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopButton.classList.add('visible');
+                } else {
+                    backToTopButton.classList.remove('visible');
+                }
+            });
+
+            backToTopButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Bottom Nav Active State
+            const currentPath = window.location.pathname;
+            document.querySelectorAll('.bottom-nav a').forEach(link => {
+                if (link.href.includes(currentPath)) {
+                    link.classList.add('active');
+                }
+                link.addEventListener('click', () => {
+                    document.querySelectorAll('.bottom-nav a').forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                });
+            });
+
+            // Bottom Nav Hide on Scroll (Desktop Only)
+            const bottomNav = document.querySelector('.bottom-nav');
+            let isScrolling;
+            window.addEventListener('scroll', () => {
+                if (window.matchMedia("(min-width: 1024px)").matches) {
+                    bottomNav.classList.add('bottom-nav-hidden');
+                    clearTimeout(isScrolling);
+                    isScrolling = setTimeout(() => {
+                        requestAnimationFrame(() => {
+                            bottomNav.classList.remove('bottom-nav-hidden');
+                        });
+                    }, 2000);
+                }
+            });
+
+            // Contact Form Submission
+            const form = document.getElementById('contact-form');
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const phoneInput = document.getElementById('phone');
+            const messageInput = document.getElementById('message');
+            const nameError = document.getElementById('name-error');
+            const emailError = document.getElementById('email-error');
+            const phoneError = document.getElementById('phone-error');
+            const messageError = document.getElementById('message-error');
+            const successMessage = document.getElementById('success-message');
+            const submitButton = document.getElementById('submit-button');
+            const formLoader = document.getElementById('form-loader');
+
+            // Fetch with Timeout
+            async function fetchWithTimeout(url, options, timeout = 3000) {
+                const controller = new AbortController();
+                const id = setTimeout(() => controller.abort(), timeout);
+                try {
+                    const response = await fetch(url, { ...options, signal: controller.signal });
+                    clearTimeout(id);
+                    return response;
+                } catch (error) {
+                    clearTimeout(id);
+                    throw error;
+                }
+            }
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                let isValid = true;
+
+                // Reset error and success messages
+                nameError.classList.remove('visible');
+                emailError.classList.remove('visible');
+                phoneError.classList.remove('visible');
+                messageError.classList.remove('visible');
+                successMessage.classList.remove('visible');
+
+                // Validate Name
+                if (!nameInput.value.trim()) {
+                    nameError.classList.add('visible');
+                    isValid = false;
+                }
+
+                // Validate Email
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailInput.value.trim() || !emailRegex.test(emailInput.value.trim())) {
+                    emailError.classList.add('visible');
+                    isValid = false;
+                }
+
+                // Validate Phone (optional)
+                const phoneRegex = /^\+?\d{10,15}$/;
+                if (phoneInput.value.trim() && !phoneRegex.test(phoneInput.value.trim())) {
+                    phoneError.classList.add('visible');
+                    isValid = false;
+                }
+
+                // Validate Message
+                if (!messageInput.value.trim()) {
+                    messageError.classList.add('visible');
+                    isValid = false;
+                }
+
+                if (!isValid) return;
+
+                // Show loader and disable button
+                formLoader.classList.add('active');
+                submitButton.disabled = true;
+
+                try {
+                    const response = await fetchWithTimeout('https://intorealtors.onrender.com/api/contact', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            name: nameInput.value.trim(),
+                            email: emailInput.value.trim(),
+                            phone: phoneInput.value.trim() || undefined,
+                            message: messageInput.value.trim(),
+                        }),
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        throw new Error(errorData.error || `Failed to submit form (Status: ${response.status})`);
+                    }
+
+                    const data = await response.json();
+                    successMessage.textContent = data.message || 'Your message has been sent successfully!';
+                    successMessage.classList.add('visible');
+                    showToast('Message sent successfully!');
+                    form.reset();
+                    setTimeout(() => {
+                        successMessage.classList.remove('visible');
+                    }, 3000);
+                } catch (error) {
+                    console.error('Error submitting form:', error.message, error.stack);
+                    showToast('Failed to send message. Please try again.', true);
+                } finally {
+                    formLoader.classList.remove('active');
+                    submitButton.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

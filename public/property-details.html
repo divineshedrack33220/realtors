@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View detailed information about premium properties in Abuja with INTO REALTORS.">
+    <title>INTO REALTORS | Property Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <link rel="icon" type="image/png" href="/admin/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+}
+
+/* Custom Scrollbar (Desktop Only) */
+@media (min-width: 1024px) {
+    html {
+        scrollbar-width: thin;
+        scrollbar-color: #FF5A3C #f1f5f9;
+    }
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px; /* For horizontal scrollbar */
+    }
+    ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #FF5A3C;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #e04a2f;
+    }
+}
+
+/* Shimmer Loading Effect */
+.shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Loader */
+.loader {
+    width: 40px;
+    aspect-ratio: 1;
+    color: #FF5A3C;
+    position: relative;
+    background: radial-gradient(10px, currentColor 94%, #0000);
+    margin: 1rem auto;
+}
+
+.loader:before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background:
+        radial-gradient(9px at bottom right, #0000 94%, currentColor) top left,
+        radial-gradient(9px at bottom left, #0000 94%, currentColor) top right,
+        radial-gradient(9px at top right, #0000 94%, currentColor) bottom left,
+        radial-gradient(9px at top left, #0000 94%, currentColor) bottom right;
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    animation: l18 1.5s infinite cubic-bezier(0.3, 1, 0, 1);
+}
+
+@keyframes l18 {
+    33%  { inset: -10px; transform: rotate(0deg) }
+    66%  { inset: -10px; transform: rotate(90deg) }
+    100% { inset: 0; transform: rotate(90deg) }
+}
+
+/* Scrollable Text Content */
+.content-container {
+    max-height: calc(100vh - 120px); /* Adjusted for top nav and floating buttons */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    padding: 1rem;
+}
+
+.content-container::-webkit-scrollbar {
+    display: none;
+}
+
+.content-container {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 1.5rem;
+    background: #FF5A3C;
+    color: white;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    z-index: 60;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover, .back-to-top:focus {
+    background: #e04a2f;
+    transform: scale(1.1);
+    outline: 2px solid #FF5A3C;
+}
+
+/* WhatsApp Floating Icon */
+.whatsapp-float {
+    position: fixed;
+    bottom: 6rem;
+    right: 1.5rem;
+    background: #25D366;
+    color: white;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    z-index: 60;
+}
+
+.whatsapp-float:hover, .whatsapp-float:focus {
+    background: #1EBE57;
+    transform: scale(1.1);
+    outline: 2px solid #25D366;
+}
+
+/* Property Image Carousel */
+.property-carousel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.75rem;
+}
+
+.carousel-images {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.carousel-images img {
+    width: 100%;
+    height: 20rem;
+    object-fit: cover;
+    flex-shrink: 0;
+    border-radius: 0.75rem;
+    cursor: pointer;
+}
+
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 0.75rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    z-index: 10;
+}
+
+.carousel-control:hover, .carousel-control:focus {
+    background: rgba(0, 0, 0, 0.7);
+    outline: 2px solid #FF5A3C;
+}
+
+.carousel-prev {
+    left: 1rem;
+}
+
+.carousel-next {
+    right: 1rem;
+}
+
+.carousel-dots {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    z-index: 10;
+}
+
+.carousel-dot {
+    width: 0.75rem;
+    height: 0.75rem;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.carousel-dot.active {
+    background: #ffffff;
+}
+
+.carousel-dot:hover, .carousel-dot:focus {
+    background: #ffffff;
+    outline: 2px solid #FF5A3C;
+}
+
+/* Scrollable Thumbnails */
+.carousel-thumbnails {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #FF5A3C #f1f5f9;
+    justify-content: center;
+}
+
+.carousel-thumbnails img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+    flex-shrink: 0;
+}
+
+.carousel-thumbnails img.active {
+    border-color: #FF5A3C;
+    transform: scale(1.1);
+}
+
+.carousel-thumbnails img:hover, .carousel-thumbnails img:focus {
+    border-color: #e04a2f;
+    transform: scale(1.1);
+}
+
+/* Full-Screen Image Modal */
+.image-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 64rem;
+    height: 90%;
+}
+
+.image-modal-content img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.image-modal-prev, .image-modal-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.5);
+    color: #000;
+    padding: 1rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.image-modal-prev:hover, .image-modal-prev:focus,
+.image-modal-next:hover, .image-modal-next:focus {
+    background: rgba(255, 255, 255, 0.8);
+    outline: 2px solid #FF5A3C;
+}
+
+.image-modal-prev {
+    left: 1rem;
+}
+
+.image-modal-next {
+    right: 1rem;
+}
+
+.image-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255, 255, 255, 0.5);
+    color: #000;
+    padding: 0.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.image-modal-close:hover, .image-modal-close:focus {
+    background: rgba(255, 255, 255, 0.8);
+    outline: 2px solid #FF5A3C;
+}
+
+/* Contact Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    width: 90%;
+    max-width: 24rem;
+    position: relative;
+}
+
+.modal-content h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 1rem;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.modal-content input:focus {
+    border-color: #FF5A3C;
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.modal-content .submit-btn {
+    background: #FF5A3C;
+    color: white;
+    border: none;
+}
+
+.modal-content .submit-btn:hover, .modal-content .submit-btn:focus {
+    background: #e04a2f;
+    outline: 2px solid #FF5A3C;
+}
+
+.modal-content .close-btn {
+    background: #e5e7eb;
+    color: #4b5563;
+    border: none;
+}
+
+.modal-content .close-btn:hover, .modal-content .close-btn:focus {
+    background: #d1d5db;
+}
+
+/* Error State */
+.error-message {
+    text-align: center;
+    color: #dc2626;
+    padding: 1rem;
+    background: #fee2e2;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 639px) {
+    .back-to-top, .whatsapp-float {
+        width: 2rem;
+        height: 2rem;
+        right: 0.75rem;
+        transform: scale(0.9);
+    }
+    .back-to-top:hover, .whatsapp-float:hover {
+        transform: scale(1);
+    }
+    .back-to-top {
+        bottom: 1.5rem;
+    }
+    .whatsapp-float {
+        bottom: 4rem;
+    }
+    .carousel-images img {
+        height: 16rem;
+    }
+    .carousel-thumbnails img {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .property-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+    .property-details > div {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .carousel-images img {
+        height: 30rem;
+    }
+    .carousel-thumbnails img {
+        width: 100px;
+        height: 100px;
+    }
+    .back-to-top, .whatsapp-float {
+        bottom: 2rem;
+        right: 2rem;
+    }
+    .whatsapp-float {
+        bottom: 5rem;
+    }
+}
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation -->
+    <nav class="sticky top-0 z-50 bg-white shadow-md py-3 px-4 flex justify-between items-center" role="navigation" aria-label="Main navigation">
+        <a href="#" id="back-button" class="text-[#FF5A3C] font-medium hover:text-[#e04a2f] transition duration-300" aria-label="Back to listings">
+            <i class="fas fa-arrow-left text-lg"></i>
+        </a>
+        <div class="text-center flex-1">
+            <span class="text-[#FF5A3C] font-bold text-xl">INTO REALTORS</span>
+        </div>
+    </nav>
+
+    <!-- Property Details Section -->
+    <section class="py-10 px-4 bg-gray-50">
+        <div class="container mx-auto">
+            <!-- Property Image Carousel -->
+            <div class="property-carousel mb-6">
+                <div class="carousel-images">
+                    <div class="loader"></div>
+                </div>
+                <button class="carousel-control carousel-prev" aria-label="Previous image" tabindex="0">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-control carousel-next" aria-label="Next image" tabindex="0">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <div class="carousel-dots" role="tablist">
+                    <!-- Dots will be dynamically inserted -->
+                </div>
+                <div class="carousel-thumbnails">
+                    <!-- Thumbnails will be dynamically inserted -->
+                </div>
+            </div>
+
+            <!-- Property Details -->
+            <div class="property-details bg-white rounded-xl shadow-md p-6">
+                <div>
+                    <h1 id="property-title" class="text-2xl md:text-3xl font-bold text-gray-800 mb-2 shimmer">Loading...</h1>
+                    <p id="property-price" class="text-xl font-semibold text-[#FF5A3C] mb-4 shimmer">Loading...</p>
+                    <p id="property-location" class="text-sm text-gray-600 flex items-center mb-4 shimmer">
+                        <i class="fas fa-map-marker-alt mr-2"></i>
+                        <span>Loading...</span>
+                    </p>
+                </div>
+                <div>
+                    <div class="border-t border-gray-200 pt-4 mb-4">
+                        <h2 class="text-lg font-bold text-gray-800 mb-2">Description</h2>
+                        <p id="property-description" class="text-sm text-gray-600 shimmer">Loading...</p>
+                    </div>
+                    <div class="border-t border-gray-200 pt-4">
+                        <h2 class="text-lg font-bold text-gray-800 mb-2">Features</h2>
+                        <ul id="property-features" class="text-sm text-gray-600 list-disc list-inside">
+                            <li class="shimmer">Loading...</li>
+                        </ul>
+                    </div>
+                    <button id="contact-agent-btn" class="mt-6 inline-block bg-[#FF5A3C] text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-[#e04a2f] transition duration-300" aria-label="Contact agent">
+                        Contact Agent
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="modal">
+        <div class="modal-content">
+            <h2>Contact Agent</h2>
+            <input type="text" id="user-name" placeholder="Your Name" aria-label="Your Name" required>
+            <input type="tel" id="user-phone" placeholder="Your Phone Number" aria-label="Your Phone Number" required>
+            <button class="submit-btn" aria-label="Send contact information to agent via WhatsApp">Send</button>
+            <button class="close-btn" aria-label="Close modal">Close</button>
+        </div>
+    </div>
+
+    <!-- Full-Screen Image Modal -->
+    <div id="image-modal" class="image-modal">
+        <div class="image-modal-content">
+            <img id="modal-image" src="" alt="Full-screen property image" loading="lazy">
+            <button class="image-modal-prev" aria-label="Previous image" tabindex="0">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="image-modal-next" aria-label="Next image" tabindex="0">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <button class="image-modal-close" aria-label="Close image modal" tabindex="0">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- WhatsApp Floating Icon -->
+    <a href="#" id="whatsapp-float" class="whatsapp-float" aria-label="Contact agent via WhatsApp">
+        <i class="fab fa-whatsapp text-xl"></i>
+    </a>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-chevron-up text-xl"></i>
+    </a>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Carousel state
+    let currentSlide = 0;
+    let imagesToShow = [];
+    let isSliding = false;
+
+    // Fetch property data
+    async function fetchProperty(id) {
+      try {
+        const token = localStorage.getItem('jwtToken'); // Retrieve token
+        const response = await fetch(`/api/properties/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
+        }
+        return await response.json();
+      } catch (error) {
+        console.error('Error fetching property:', {
+          message: error.message,
+          id: id,
+          url: `/api/properties/${id}`,
+          stack: error.stack
+        });
+        document.querySelector('.property-details').innerHTML = `
+          <div class="error-message">
+            Error loading property: ${error.message}. <a href="/listing.html" class="text-blue-600 underline">Go to listings</a>
+          </div>`;
+        document.querySelector('.carousel-images').innerHTML = `
+          <div class="error-message">
+            Error loading images: ${error.message}. <a href="/listing.html" class="text-blue-600 underline">Go to listings</a>
+          </div>`;
+        return null;
+      }
+    }
+
+    // Update carousel slide
+    function updateCarousel(index, fromModal = false, fromThumbnail = false) {
+      if (isSliding || index < 0 || index >= imagesToShow.length) return;
+      isSliding = true;
+
+      console.log('Showing image:', { index, src: imagesToShow[index], fromModal, fromThumbnail });
+
+      const carouselImages = document.querySelector('.carousel-images');
+      carouselImages.style.transform = `translateX(-${index * 100}%)`;
+
+      const dots = document.querySelectorAll('.carousel-dot');
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+        dot.setAttribute('aria-selected', i === index ? 'true' : 'false');
+        dot.setAttribute('tabindex', i === index ? '0' : '-1');
+      });
+
+      const thumbnails = document.querySelectorAll('.carousel-thumbnails img');
+      thumbnails.forEach((thumb, i) => {
+        thumb.classList.toggle('active', i === index);
+      });
+
+      if (imagesToShow.length > 1 && (fromModal || fromThumbnail)) {
+        const thumbnail = thumbnails[index];
+        if (thumbnail) {
+          thumbnail.scrollIntoView({
+            behavior: 'smooth',
+            inline: 'center',
+            block: 'nearest'
+          });
+        }
+      }
+
+      const images = carouselImages.querySelectorAll('img');
+      images.forEach((img, i) => {
+        img.setAttribute('aria-hidden', i !== index);
+      });
+
+      const imageModal = document.getElementById('image-modal');
+      if (imageModal.style.display === 'flex' || fromModal) {
+        const modalImage = document.getElementById('modal-image');
+        modalImage.src = imagesToShow[index];
+        modalImage.alt = `${document.getElementById('property-title').textContent} - Image ${index + 1}`;
+      }
+
+      currentSlide = index;
+      setTimeout(() => { isSliding = false; }, 500);
+    }
+
+    // Get property ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const propertyId = urlParams.get('id');
+    if (!propertyId) {
+      document.querySelector('.property-details').innerHTML = `
+        <div class="error-message">
+          Error: No property ID provided in URL. <a href="/listing.html" class="text-blue-600 underline">Go to listings</a>
+        </div>`;
+      document.querySelector('.carousel-images').innerHTML = `
+        <div class="error-message">
+          Error: No property ID provided in URL. <a href="/listing.html" class="text-blue-600 underline">Go to listings</a>
+        </div>`;
+      console.error('No property ID provided in URL', { url: window.location.href });
+      return;
+    }
+
+    if (!/^[0-9a-fA-F]{24}$/.test(propertyId)) {
+      document.querySelector('.property-details').innerHTML = `
+        <div class="error-message">
+          Error: Invalid property ID format. <a href="/listing.html" class="text-blue-600 underline">Go to listings</a>
+        </div>`;
+      document.querySelector('.carousel-images').innerHTML = `
+        <div class="error-message">
+          Error: Invalid property ID format. <a href="/listing.html" class="text-blue-600 underline">Go to listings</a>
+        </div>`;
+      console.error('Invalid property ID format:', { propertyId, url: window.location.href });
+      return;
+    }
+
+    const property = await fetchProperty(propertyId);
+    if (!property) return;
+
+    console.log('Property data:', { image: property.image, images: property.images });
+
+    const schemaScript = document.createElement('script');
+    schemaScript.type = 'application/ld+json';
+    schemaScript.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": property.title,
+      "description": property.description || "No description available",
+      "image": [property.image, ...property.images].filter(img => img),
+      "offers": {
+        "@type": "Offer",
+        "price": property.price,
+        "priceCurrency": "NGN",
+        "availability": property.type === 'sale' ? "http://schema.org/InStock" : "http://schema.org/LimitedAvailability",
+        "seller": {
+          "@type": "Organization",
+          "name": "INTO REALTORS",
+          "url": "https://www.intorealtors.com"
+        }
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": property.location.split(', ')[0] || property.location,
+        "addressRegion": "Abuja",
+        "addressCountry": "NG"
+      }
+    });
+    document.head.appendChild(schemaScript);
+
+    const titleElement = document.getElementById('property-title');
+    const priceElement = document.getElementById('property-price');
+    const locationElement = document.getElementById('property-location')?.querySelector('span');
+    const descriptionElement = document.getElementById('property-description');
+    const featuresList = document.getElementById('property-features');
+
+    if (titleElement && priceElement && locationElement && descriptionElement && featuresList) {
+      titleElement.textContent = property.title;
+      priceElement.textContent = property.price;
+      locationElement.textContent = property.location;
+      descriptionElement.textContent = property.description || 'No description available.';
+      featuresList.innerHTML = property.features.length > 0
+        ? property.features.map(feature => `<li>${feature}</li>`).join('')
+        : '<li>No features available.</li>';
+      [titleElement, priceElement, locationElement, descriptionElement, ...featuresList.children].forEach(el => el.classList.remove('shimmer'));
+      console.log('Property details loaded:', { title: property.title, id: propertyId });
+    } else {
+      console.error('Property details elements not found');
+    }
+
+    const carouselImages = document.querySelector('.carousel-images');
+    const carouselDots = document.querySelector('.carousel-dots');
+    const carouselThumbnails = document.querySelector('.carousel-thumbnails');
+    carouselImages.innerHTML = '';
+    imagesToShow = [property.image, ...property.images].filter(img => img && img.trim() !== '');
+    console.log('Images to show:', imagesToShow, { length: imagesToShow.length });
+
+    if (imagesToShow.length === 0) {
+      carouselImages.innerHTML = `
+        <div class="error-message">
+          No images available for this property.
+        </div>`;
+      console.warn('No images available for property:', { id: propertyId, title: property.title });
+      return;
+    }
+
+    if (imagesToShow.length === 1) {
+      document.querySelector('.carousel-prev').style.display = 'none';
+      document.querySelector('.carousel-next').style.display = 'none';
+      document.querySelector('.carousel-dots').style.display = 'none';
+      carouselThumbnails.style.overflowX = 'hidden';
+      carouselThumbnails.style.justifyContent = 'center';
+    }
+
+    imagesToShow.forEach((imgSrc, index) => {
+      console.log('Processing image:', { index, src: imgSrc });
+      const img = document.createElement('img');
+      img.src = imgSrc;
+      img.alt = `${property.title} - Image ${index + 1}`;
+      img.loading = index === 0 ? 'eager' : 'lazy';
+      img.dataset.index = index;
+      img.setAttribute('role', 'tabpanel');
+      img.setAttribute('aria-hidden', index !== 0);
+      img.style.display = 'block';
+      img.addEventListener('error', () => {
+        console.error('Failed to load image:', { src: imgSrc, index });
+        img.src = 'https://placehold.co/800x400?text=Image+Not+Found';
+        img.alt = 'Placeholder image';
+      });
+      img.addEventListener('load', () => {
+        console.log('Image loaded:', { src: imgSrc, index });
+      });
+      carouselImages.appendChild(img);
+
+      if (imagesToShow.length > 1) {
+        const dot = document.createElement('span');
+        dot.classList.add('carousel-dot');
+        if (index === 0) dot.classList.add('active');
+        dot.dataset.slide = index;
+        dot.setAttribute('role', 'tab');
+        dot.setAttribute('aria-label', `Go to image ${index + 1}`);
+        dot.setAttribute('aria-selected', index === 0 ? 'true' : 'false');
+        dot.setAttribute('tabindex', index === 0 ? '0' : '-1');
+        carouselDots.appendChild(dot);
+      }
+
+      const thumb = document.createElement('img');
+      thumb.src = imgSrc;
+      thumb.alt = `${property.title} - Thumbnail ${index + 1}`;
+      thumb.loading = 'lazy';
+      if (index === 0) thumb.classList.add('active');
+      thumb.dataset.index = index;
+      thumb.setAttribute('role', 'button');
+      thumb.setAttribute('aria-label', `Select image ${index + 1}`);
+      thumb.setAttribute('tabindex', '0');
+      thumb.addEventListener('error', () => {
+        console.error('Failed to load thumbnail:', { src: imgSrc, index });
+        thumb.src = 'https://placehold.co/80x80?text=Thumbnail+Not+Found';
+        thumb.alt = 'Placeholder thumbnail';
+      });
+      thumb.addEventListener('load', () => {
+        console.log('Thumbnail loaded:', { src: imgSrc, index });
+      });
+      carouselThumbnails.appendChild(thumb);
+    });
+
+    if (imagesToShow.length === 1) {
+      updateCarousel(0);
+    }
+
+    const prevButton = document.querySelector('.carousel-prev');
+    const nextButton = document.querySelector('.carousel-next');
+    const dots = document.querySelectorAll('.carousel-dot');
+    const thumbnails = document.querySelectorAll('.carousel-thumbnails img');
+
+    if (imagesToShow.length > 1) {
+      prevButton.addEventListener('click', () => {
+        const newIndex = currentSlide === 0 ? imagesToShow.length - 1 : currentSlide - 1;
+        updateCarousel(newIndex);
+      });
+
+      nextButton.addEventListener('click', () => {
+        const newIndex = currentSlide === imagesToShow.length - 1 ? 0 : currentSlide + 1;
+        updateCarousel(newIndex);
+      });
+
+      dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+          const index = parseInt(dot.dataset.slide);
+          updateCarousel(index);
+        });
+        dot.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            updateCarousel(parseInt(dot.dataset.slide));
+          }
+        });
+      });
+    }
+
+    thumbnails.forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        const index = parseInt(thumb.dataset.index);
+        updateCarousel(index, false, true);
+      });
+      thumb.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          updateCarousel(parseInt(thumb.dataset.index), false, true);
+        }
+      });
+    });
+
+    const imageModal = document.getElementById('image-modal');
+    const modalImage = document.getElementById('modal-image');
+    const modalPrev = document.querySelector('.image-modal-prev');
+    const modalNext = document.querySelector('.image-modal-next');
+    const modalClose = document.querySelector('.image-modal-close');
+
+    carouselImages.querySelectorAll('img').forEach(img => {
+      img.addEventListener('click', () => {
+        const index = parseInt(img.dataset.index);
+        modalImage.src = imagesToShow[index];
+        modalImage.alt = `${property.title} - Image ${index + 1}`;
+        imageModal.style.display = 'flex';
+        imageModal.setAttribute('aria-hidden', 'false');
+        currentSlide = index;
+        console.log('Opened image modal:', { index, src: imagesToShow[index] });
+      });
+    });
+
+    if (imagesToShow.length > 1) {
+      modalPrev.addEventListener('click', () => {
+        const newIndex = currentSlide === 0 ? imagesToShow.length - 1 : currentSlide - 1;
+        updateCarousel(newIndex, true);
+      });
+
+      modalNext.addEventListener('click', () => {
+        const newIndex = currentSlide === imagesToShow.length - 1 ? 0 : currentSlide + 1;
+        updateCarousel(newIndex, true);
+      });
+    } else {
+      modalPrev.style.display = 'none';
+      modalNext.style.display = 'none';
+    }
+
+    modalClose.addEventListener('click', () => {
+      imageModal.style.display = 'none';
+      imageModal.setAttribute('aria-hidden', 'true');
+      console.log('Image modal closed');
+    });
+
+    imageModal.addEventListener('click', (e) => {
+      if (e.target === imageModal) {
+        imageModal.style.display = 'none';
+        imageModal.setAttribute('aria-hidden', 'true');
+        console.log('Image modal closed by clicking outside');
+      }
+    });
+
+    imageModal.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        imageModal.style.display = 'none';
+        imageModal.setAttribute('aria-hidden', 'true');
+        console.log('Image modal closed via Escape key');
+      }
+      if (imagesToShow.length > 1) {
+        if (e.key === 'ArrowLeft') {
+          const newIndex = currentSlide === 0 ? imagesToShow.length - 1 : currentSlide - 1;
+          updateCarousel(newIndex, true);
+        }
+        if (e.key === 'ArrowRight') {
+          const newIndex = currentSlide === imagesToShow.length - 1 ? 0 : currentSlide + 1;
+          updateCarousel(newIndex, true);
+        }
+      }
+    });
+
+    const backToTopButton = document.querySelector('.back-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backToTopButton.classList.add('visible');
+      } else {
+        backToTopButton.classList.remove('visible');
+      }
+    });
+
+    backToTopButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      console.log('Back to top clicked');
+    });
+
+    const contactButton = document.getElementById('contact-agent-btn');
+    const whatsappFloat = document.getElementById('whatsapp-float');
+    const modal = document.getElementById('contact-modal');
+    const submitButton = document.querySelector('.modal-content .submit-btn');
+    const closeButton = document.querySelector('.modal-content .close-btn');
+    const userNameInput = document.getElementById('user-name');
+    const userPhoneInput = document.getElementById('user-phone');
+
+    function openContactModal(e) {
+      e.preventDefault();
+      if (modal) {
+        modal.style.display = 'flex';
+        modal.setAttribute('aria-hidden', 'false');
+        userNameInput.focus();
+        console.log('Contact modal opened');
+      } else {
+        console.error('Contact modal not found');
+      }
+    }
+
+    if (contactButton) {
+      contactButton.addEventListener('click', openContactModal);
+    } else {
+      console.error('Contact button not found');
+    }
+
+    if (whatsappFloat) {
+      whatsappFloat.addEventListener('click', openContactModal);
+    } else {
+      console.error('WhatsApp float button not found');
+    }
+
+    if (closeButton) {
+      closeButton.addEventListener('click', () => {
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+        userNameInput.value = '';
+        userPhoneInput.value = '';
+        console.log('Contact modal closed');
+      });
+    } else {
+      console.error('Close button not found');
+    }
+
+    if (submitButton) {
+      submitButton.addEventListener('click', async () => {
+        const name = userNameInput.value.trim();
+        const phone = userPhoneInput.value.trim();
+        if (name && phone) {
+          try {
+            const response = await fetch('/api/contact', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name,
+                email: `${name.replace(/\s+/g, '.').toLowerCase()}@example.com`,
+                phone,
+                message: `Interested in ${property.title} (ID: ${propertyId})`
+              })
+            });
+            if (!response.ok) {
+              const errorData = await response.json().catch(() => ({}));
+              throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
+            }
+            console.log('Contact message saved:', { name, phone, property: property.title });
+          } catch (error) {
+            console.error('Error saving contact message:', {
+              message: error.message,
+              stack: error.stack
+            });
+          }
+          const message = encodeURIComponent(`Hello, I'm ${name} (${phone}). I'm interested in the ${property.title} property.`);
+          window.location.href = `https://wa.me/+23470314517217?text=${message}`;
+          modal.style.display = 'none';
+          modal.setAttribute('aria-hidden', 'true');
+          userNameInput.value = '';
+          userPhoneInput.value = '';
+        } else {
+          alert('Please enter both your name and phone number.');
+        }
+      });
+    } else {
+      console.error('Submit button not found');
+    }
+
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+          modal.setAttribute('aria-hidden', 'true');
+          userNameInput.value = '';
+          userPhoneInput.value = '';
+          console.log('Contact modal closed by clicking outside');
+        }
+      });
+      modal.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          modal.style.display = 'none';
+          modal.setAttribute('aria-hidden', 'true');
+          userNameInput.value = '';
+          userPhoneInput.value = '';
+          console.log('Contact modal closed via Escape key');
+        }
+      });
+    } else {
+      console.error('Modal not found');
+    }
+
+    const backButton = document.getElementById('back-button');
+    if (backButton) {
+      backButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        try {
+          window.history.back();
+          console.log('Back button clicked, navigating back');
+        } catch (err) {
+          console.error('Back button error:', { message: err.message, stack: err.stack });
+          window.location.href = '/listing.html';
+        }
+      });
+    } else {
+      console.error('Back button not found');
+    }
+  });
+</script>
+</body>
+</html>
