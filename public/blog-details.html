@@ -211,7 +211,7 @@
                     if (!isValidObjectId(id)) {
                         throw new Error('Invalid blog ID format');
                     }
-                    const response = await fetch(`https://intorealtors.onrender.com/api/blogs/${id}`);
+                    const response = await fetch(`https://realtors-yvtj.onrender.com/api/blogs/${id}`);
                     if (!response.ok) {
                         const errorData = await response.json().catch(() => ({}));
                         if (response.status === 404) {
